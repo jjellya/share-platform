@@ -18,11 +18,15 @@ public class UserInfo {
     @Id
     private String userId;
 
-    /*用户名称*/
+    private String openId;
+
+    private String sessionKey;
+
+    /*用户名称nick_name*/
     private String userName;
 
     /*用户头像*/
-    private String avatarurl;
+    private String avatarUrl;
 
     /*性别   0 男 1 女*/
     private Integer userGender;
