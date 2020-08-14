@@ -27,8 +27,8 @@ public class ResultVO<T> {
         this.data = data;
     }
 
-    public boolean isOK(){
-        return this.status==200;
-    }
+//    public boolean isOK(){
+//        return this.status==200;
+//    }
 
 }

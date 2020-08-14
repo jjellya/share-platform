@@ -10,13 +10,17 @@ package com.ad.controller;
 
 import com.ad.VO.ResultVO;
 import com.ad.VO.UserInfoVO;
+import com.ad.VO.WechatUserVO;
 import com.ad.pojo.UserInfo;
+import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import com.ad.utils.WechatUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,10 +33,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class UserController {
 
-    /*@Autowired
-    private UserMapper userMapper;*/
+
+    @Autowired
+    private UserServiceImpl userService;
 
     /**
      * 微信用户登录详情
@@ -46,7 +52,6 @@ public class UserController {
                                @RequestParam(value = "iv", required = false) String iv,
                                 HttpServletRequest request,
                                 HttpServletResponse response) {
-
 
         // 用户非敏感信息：rawData
         // 签名：signature
@@ -66,8 +71,7 @@ public class UserController {
             return ResultVOUtil.build(500, "签名校验失败", null);
         }
         // 5.根据返回的User实体类，判断用户是否是新用户，是的话，将用户信息存到数据库；
-        //TODO : user = this.userMapper.selectById(openid);替换掉下面那个null;
-        UserInfo user = null;
+        UserInfo user = userService.findOneByOpenId(openid);
 
         // uuid生成唯一key以及sessionID , 用于维护微信小程序用户与服务端的会话
         String skey = UUID.randomUUID().toString();
@@ -84,39 +88,33 @@ public class UserController {
             String country = rawDataJson.getString("country");
             String province = rawDataJson.getString("province");
 
-            user = new UserInfo();
-            user.setUserId(openid);
-            user.setSessionKey(skey);
-            //user.setUserMail(null);
-            //user.setCreateTime(new Date());
-            //user.setLastVisitTime(new Date());
-            user.setUserMail(sessionKey);
-            //user.setCity(city);
-            //user.setProvince(province);
-            //user.setCountry(country);
-            user.setAvatarUrl(avatarUrl);
-            user.setUserGender(Integer.parseInt(gender));
-            user.setUserName(nickName);
-
+            user = userService.addUser(openid,skey,avatarUrl,Integer.parseInt(gender),nickName);
             session.setAttribute("userInfo",user);
-            System.out.println(user.toString());
+
+
         } else {
             // TODO :该用户已存在，刷新该用户最新登录时间到日志log
-            System.out.println("用户登陆时间"+new Date());
+            log.info("用户: Id="+user.getUserId()+",name = "+user.getUserName()+"于"+new Date()+"登录本平台");
             // 重新设置会话skey
             user.setSessionKey(skey);
-            System.out.println(user.toString());
+            userService.update(user);
         }
         //encrypteData比rowData多了appid和openid
         //JSONObject userInfo = WechatUtil.getUserInfo(encrypteData, sessionKey, iv);
         //6. 把新的skey和sessionId返回给小程序
-        UserInfoVO  userInfoVO = new UserInfoVO();
-        userInfoVO.setSkey(skey);
-        userInfoVO.setSessionId(sessionId);
+        WechatUserVO wechatUserVO = new WechatUserVO();
+        wechatUserVO.setSkey(skey);
+        wechatUserVO.setSessionId(sessionId);
+        wechatUserVO.setOpenId(openid);
+        UserInfoVO userInfoVO = new UserInfoVO(user);
+        wechatUserVO.setUserInfoVO(userInfoVO);
 
-        ResultVO result = ResultVOUtil.build(200, "登录成功", userInfoVO);
-        System.out.println("------->数据="+result.getData().toString());
-        return ResultVOUtil.build(200, "登录成功", userInfoVO);
+        ResultVO result = ResultVOUtil.build(200, "登录成功", wechatUserVO);
+
+        //TODO delete it!
+        System.out.println("后台临时展示------->返回前端数据 ： "+result.getData().toString());
+
+        return ResultVOUtil.build(200, "登录成功", wechatUserVO);
     }
 
 }

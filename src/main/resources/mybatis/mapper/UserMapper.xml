@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.UserMapper">
+    <select id="getUserByOpenId" resultType="com.ad.pojo.UserInfo">
+      select user_id,open_id,session_key,user_name,avatar_url,user_gender,user_grade,user_star,doc_num,post_num,user_mail from user_info where open_id = #{openId}
+    </select>
+
+    <select id="getUserById" resultType="com.ad.pojo.UserInfo">
+      select user_id,open_id,session_key,user_name,avatar_url,user_gender,user_grade,user_star,doc_num,post_num,user_mail from user_info where user_id = #{id}
+    </select>
+
+    <select id="getUserByName" resultType="com.ad.pojo.UserInfo">
+      select user_id,open_id,session_key,user_name,avatar_url,user_gender,user_grade,user_star,doc_num,post_num,user_mail from user_info where user_name = #{name}
+    </select>
+
+    <insert id="addUser" parameterType="com.ad.pojo.UserInfo" useGeneratedKeys="true" keyProperty="userId">
+      insert into user_info(open_id,session_key,user_name,avatar_url,user_gender,user_grade,user_star,doc_num,post_num,user_mail)
+      values (#{openId},#{sessionKey},#{userName},#{avatarUrl},#{userGender},#{userGrade},#{userStar},#{docNum},#{postNum},#{userMail})
+    </insert>
+
+    <update id="updateUser" parameterType="com.ad.pojo.UserInfo">
+     update user_info set open_id=#{openId},session_key=#{sessionKey},user_name=#{userName},avatar_url=#{avatarUrl},
+     user_gender=#{userGender},user_grade=#{userGrade},user_star=#{userStar},doc_num=#{docNum},post_num=#{postNum},user_mail=#{userMail}
+     where user_id = #{userId}
+</update>
+    <delete id="deleteUserById" >
+    delete from user_info where user_id=#{id}
+</delete>
+
+</mapper>

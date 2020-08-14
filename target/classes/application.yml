@@ -25,6 +25,8 @@ spring:
       useGlobalDataSourceStat: on
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+
+
   mail:
     host: smtp.qq.com
     username: 3596405356@qq.com
@@ -62,4 +64,8 @@ server:
 mail:
   mailFrom: 3596405356@qq.com
   domainName: http://localhost:8088/adshare
+
 #debug: true
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml

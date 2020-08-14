@@ -1,19 +1,20 @@
--- version : 0.9.6
--- update date :2020/08/08
--- author: 林俊杰
+-- version : 0.9.7
+-- update date :2020/08/12
+-- author: 肖杰航
 
--- 增加了session_key字段
+-- 增加了openid,session_key字段
 CREATE TABLE `user_info`
 (
-    `user_id`       varchar(128) NOT NULL COMMENT '小程序用户openid,易班用户易班Id',
+    `user_id`       int(10) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+    `open_id`        varchar(128) COMMENT '小程序用户openid,易班用户易班Id',
     `session_key`	varchar(128) COMMENT 'session_key',
     `user_name`     varchar(32) NOT NULL COMMENT '用户昵称或nickname',
     `avatar_url`  	varchar(128)  NOT NULL COMMENT '用户头像' ,
     `user_gender` 	tinyint(1) NULL DEFAULT 0 COMMENT '性别   0 男 1 女 ',
     `user_grade`	int COMMENT '年级',
-    `user_star`     int         NOT NULL DEFAULT 0 COMMENT 'Star',
-    `doc_num`    	int         NOT NULL DEFAULT 0 COMMENT '资源数量',
-    `post_num` 		int         NOT NULL DEFAULT 100 COMMENT '帖子数量',
+    `user_star`     int(10)     NOT NULL DEFAULT 0 COMMENT 'Star',
+    `doc_num`    	int(10)     NOT NULL DEFAULT 0 COMMENT '资源数量',
+    `post_num` 		int(10)     NOT NULL DEFAULT 0 COMMENT '帖子数量',
     `user_mail`     varchar(64) COMMENT 'e-mail',
     PRIMARY KEY (`user_id`)
 )  comment '用户表' ;
