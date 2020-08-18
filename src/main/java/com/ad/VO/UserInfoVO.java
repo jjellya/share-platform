@@ -3,6 +3,8 @@ package com.ad.VO;
 import com.ad.pojo.UserInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Create By  @林俊杰
@@ -11,6 +13,8 @@ import lombok.Data;
  * @version 1.0
  */
 @Data
+@Getter
+@Setter
 public class UserInfoVO {
 
 
