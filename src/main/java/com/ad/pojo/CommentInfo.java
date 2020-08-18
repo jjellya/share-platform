@@ -16,16 +16,16 @@ import java.util.Date;
 @Data
 public class CommentInfo {
     @Id
-    private String commentId;
+    private Integer commentId;
 
     /*帖子ID*/
-    private String postId;
+    private Integer postId;
 
     /*用户Id*/
-    private String userId;
+    private Integer userId;
 
     /*文件Id*/
-    private String docId;
+    private Integer docId;
 
     /*评论内容:[评论类型为纯文本时不能为空]*/
     private String commentContent;

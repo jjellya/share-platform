@@ -51,7 +51,7 @@ public class UserController {
      */
     @PostMapping("wx/login")
     @ResponseBody
-    public ResultVO user_login(@RequestParam(value = "code", required = false) String code,
+    public ResultVO wx_user_login(@RequestParam(value = "code", required = false) String code,
                                @RequestParam(value = "rawData", required = false) String rawData,
                                @RequestParam(value = "signature", required = false) String signature,
                                @RequestParam(value = "encrypteData", required = false) String encrypteData,
@@ -107,7 +107,7 @@ public class UserController {
         }
         //encrypteData比rowData多了appid和openid
         //JSONObject userInfo = WechatUtil.getUserInfo(encrypteData, sessionKey, iv);
-        //6. 把新的skey和sessionId返回给小程序
+        //6. 把新的skey和sessionId、userInfo返回给小程序
         WechatUserVO wechatUserVO = new WechatUserVO();
         wechatUserVO.setSkey(skey);
         wechatUserVO.setSessionId(sessionId);

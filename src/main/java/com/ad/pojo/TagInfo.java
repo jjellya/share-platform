@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Data
 public class TagInfo {
     @Id
-    private String tagId;
+    private Integer tagId;
 
     /*内容*/
     private String tagContent;

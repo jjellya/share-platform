@@ -15,9 +15,9 @@ import javax.persistence.Id;
 @Data
 public class LinkInfo {
     @Id
-    private String linkId;
+    private Integer linkId;
 
-    private String docId;
+    private Integer docId;
 
-    private String userId;
+    private Integer userId;
 }

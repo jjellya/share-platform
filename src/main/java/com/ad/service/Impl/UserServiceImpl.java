@@ -64,11 +64,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserInfo user) {
+    public int update(UserInfo user) {
+        int updateNum = 0;
         try {
-            userMapper.updateUser(user);
+            updateNum = userMapper.updateUser(user);
         }catch (Exception e){
             log.error("用户: Id="+user.getUserId()+"更新失败!");
+        }finally {
+            return updateNum;
         }
     }
 }

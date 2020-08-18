@@ -17,7 +17,7 @@ import java.util.Date;
 public class PostInfo {
 
     @Id
-    private String postId;
+    private Integer postId;
 
     /*标题*/
     private String postTitle;
@@ -32,7 +32,7 @@ public class PostInfo {
     private String postTag2;
 
     /*帖主ID*/
-    private String userId;
+    private Integer userId;
 
     /*创建时间*/
     private Date createTime;

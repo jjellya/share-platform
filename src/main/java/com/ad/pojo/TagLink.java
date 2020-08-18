@@ -15,14 +15,14 @@ import javax.persistence.Id;
 @Data
 public class TagLink {
     @Id
-    private String tlinkId;
+    private Integer tlinkId;
 
     /*标签ID*/
-    private String tagId;
+    private Integer tagId;
 
     /*文档ID*/
-    private String docId;
+    private Integer docId;
 
     /*帖子ID*/
-    private String postId;
+    private Integer postId;
 }

@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Data
 public class AdInfo {
     @Id
-    private String adId;
+    private Integer adId;
 
     /*广告标题(寻物启事，组队招聘，寒暑假工)*/
     private String adTitle;
@@ -24,7 +24,7 @@ public class AdInfo {
     private String adPic;
 
     /*用户Id*/
-    private String userId;
+    private Integer userId;
 
     /*联系方式*/
     private String adContact;

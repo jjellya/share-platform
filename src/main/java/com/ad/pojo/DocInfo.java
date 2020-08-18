@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 public class DocInfo {
     @Id
-    private String docId;
+    private Integer docId;
 
     /*文件名称*/
     private String docName;
@@ -37,7 +37,7 @@ public class DocInfo {
     private int starNum;
 
     /*上传者Id*/
-    private String userId;
+    private Integer userId;
 
     /*上传时间*/
     private Date uploadTime;

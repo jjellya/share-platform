@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.TagMapper">
+
+    <select id="getTagById" resultType="com.ad.pojo.TagInfo">
+      select * from tag_info where tag_id = #{id}
+    </select>
+
+    <select id="getTagByContent" resultType="com.ad.pojo.TagInfo">
+      select * from tag_info where tag_content like '%' #{content} '%'
+    </select>
+
+
+    <insert id="addTag" parameterType="com.ad.pojo.TagInfo" useGeneratedKeys="true" keyProperty="tagId">
+      insert into tag_info(tag_content)
+      values (#{tagContent})
+    </insert>
+
+
+    <update id="updateTag" parameterType="com.ad.pojo.TagInfo">
+     update tag_info set tag_content=#{tagContent}
+     where tag_id = #{tagId}
+    </update>
+
+    <delete id="deleteTagById" >
+    delete from tag_info where tag_id=#{id}
+    </delete>
+
+</mapper>

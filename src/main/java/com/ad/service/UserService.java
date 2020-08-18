@@ -20,5 +20,5 @@ public interface UserService {
 
     List<UserInfo> findOneByName(String name);
 
-    void update(UserInfo user);
+    int update(UserInfo user);
 }
