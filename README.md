@@ -24,6 +24,12 @@
 
     添加包含易班模拟登录服务的package--simulateLogin
     添加和易班登录相关的controller以及VO，实现易班的模拟登录
+    
+2020-8-19 更新：
+
+    添加对于帖子的增删改查mapper
+    添加对于标签的增删改查mapper
+    添加了有关帖子以及标签的业务层,可通过标签内容查询相关帖子
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
