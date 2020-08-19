@@ -40,7 +40,16 @@ public class CommunityController {
         List<PostDTO> postDTOList = null;
         //TODO if (grade = xxx) if(classification = xxx)
         if(classification== ClassificationEnum.ORDER_BY_TIME.getCode()){
+            //"新鲜"栏目社区
             postDTOList = postService.findListOrderByTime(groupNum,groupSize);
+        }else if (classification == ClassificationEnum.ORDER_BY_MY.getCode()){
+            //TODO "我的"栏目社区
+
+        }else if (classification == ClassificationEnum.ORDER_BY_SYS.getCode()){
+            //TODO "推荐"栏目社区
+
+        }else{
+            log.error("请求参数错误,请检查设置");
         }
 
 
