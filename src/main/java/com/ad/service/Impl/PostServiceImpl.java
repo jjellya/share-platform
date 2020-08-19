@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -107,7 +108,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostDTO> findListOrderByTime(int offset, int size) {
 
-        List<PostDTO> postDTOList = null;
+        List<PostDTO> postDTOList = new ArrayList<>();
 
         if(size == 0){
             log.error("请求错误,size = 0");

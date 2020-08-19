@@ -30,7 +30,12 @@ public class CommunityController {
 
     @GetMapping("api/user/community")
     @ResponseBody
-    public ResultVO community(@RequestParam("grade") int grade,@RequestParam("classification") int classification, @RequestParam("groupnum") int groupNum,@RequestParam("groupsize") int groupSize,HttpServletRequest request, HttpServletResponse response){
+    public ResultVO community(@RequestParam("grade") int grade,
+                              @RequestParam("classification") int classification,
+                              @RequestParam("groupnum") int groupNum,
+                              @RequestParam("groupsize") int groupSize,
+                              HttpServletRequest request,
+                              HttpServletResponse response){
 
         List<PostDTO> postDTOList = null;
         //TODO if (grade = xxx) if(classification = xxx)
@@ -43,6 +48,7 @@ public class CommunityController {
             log.error("获取社区信息失败");
             return ResultVOUtil.errorMsg("获取社区信息失败");
         }
+       
         return ResultVOUtil.success(postDTOList);
     }
 }
