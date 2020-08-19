@@ -48,7 +48,7 @@ public class CommunityController {
             log.error("获取社区信息失败");
             return ResultVOUtil.errorMsg("获取社区信息失败");
         }
-       
+
         return ResultVOUtil.success(postDTOList);
     }
 }

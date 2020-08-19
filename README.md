@@ -30,6 +30,7 @@
     添加对于帖子的增删改查mapper
     添加对于标签的增删改查mapper
     添加了有关帖子以及标签的业务层,可通过标签内容查询相关帖子
+    添加了社区的controller层部分功能,点击"新鲜"按最新时间顺序展示话题简略信息
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
