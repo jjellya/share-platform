@@ -31,6 +31,9 @@ public class PostInfo {
     /*标签2*/
     private String postTag2;
 
+    /*评论数*/
+    private Integer commentNum;
+
     /*帖主ID*/
     private Integer userId;
 

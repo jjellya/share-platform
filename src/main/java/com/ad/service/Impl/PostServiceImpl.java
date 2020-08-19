@@ -1,7 +1,13 @@
 package com.ad.service.Impl;
 
+import com.ad.converter.PostInfo2PostDTOConverter;
+import com.ad.dto.PostDTO;
 import com.ad.mapper.PostMapper;
+import com.ad.mapper.TagMapper;
+import com.ad.mapper.UserMapper;
 import com.ad.pojo.PostInfo;
+import com.ad.pojo.TagInfo;
+import com.ad.pojo.UserInfo;
 import com.ad.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,12 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostMapper postMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private TagMapper tagMapper;
 
     @Override
     public PostInfo addPost(String postTitle, String postContent, Integer userId) {
@@ -90,5 +102,31 @@ public class PostServiceImpl implements PostService {
         }finally {
             return deleteNum;
         }
+    }
+
+    @Override
+    public List<PostDTO> findListOrderByTime(int offset, int size) {
+
+        List<PostDTO> postDTOList = null;
+
+        if(size == 0){
+            log.error("请求错误,size = 0");
+            return postDTOList;
+        }
+
+        UserInfo tempUser;
+        TagInfo tempTag;
+        //TODO 可尝试优化数据库,利用数据库冗余字段通过list.stream().map(e->convert(e)).collect(Collectors.toList());来加快填充速度
+        List<PostInfo> postList = postMapper.getPageOrderByTime(offset,size);
+        if(postList.size()>0) {
+            for (PostInfo post : postList
+            ) {
+                tempUser = userMapper.getUserById(post.getUserId());
+                tempTag = tagMapper.getTagByPostId(post.getPostId());
+                postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTag));
+            }
+        }
+
+        return postDTOList;
     }
 }

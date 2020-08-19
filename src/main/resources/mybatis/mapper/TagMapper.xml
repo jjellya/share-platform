@@ -16,6 +16,10 @@ resultType:返回值类型
       select * from tag_info where tag_content like '%' #{content} '%'
     </select>
 
+    <select id="getTagByPostId" resultType="com.ad.pojo.TagInfo">
+      select * from tag_info where tag_id in (select tag_id from tag_link where post_id = #{postId})
+    </select>
+
 
     <insert id="addTag" parameterType="com.ad.pojo.TagInfo" useGeneratedKeys="true" keyProperty="tagId">
       insert into tag_info(tag_content)

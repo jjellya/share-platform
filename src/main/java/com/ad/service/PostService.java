@@ -2,6 +2,7 @@ package com.ad.service;
 
 
 
+import com.ad.dto.PostDTO;
 import com.ad.pojo.PostInfo;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface PostService {
     int update(PostInfo post);
 
     int deleteById(Integer id);
+
+    List<PostDTO> findListOrderByTime(int offset,int size);
 }

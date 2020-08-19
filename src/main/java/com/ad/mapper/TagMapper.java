@@ -30,6 +30,14 @@ public interface TagMapper {
      */
     public List<TagInfo> getTagByContent(String content);
 
+
+    /**
+     * 通过ID查找tag
+     * @param postId
+     * @return
+     */
+    public TagInfo getTagByPostId(Integer postId);
+
     /**
      * 添加Tag
      * @param tag

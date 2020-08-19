@@ -22,7 +22,7 @@ public class PostDTO {
     private String content;
 
     /*帖主名称*/
-    private Integer username;
+    private String username;
 
     /*帖主头像*/
     private String avatarUrl;

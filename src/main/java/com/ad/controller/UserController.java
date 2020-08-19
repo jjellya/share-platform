@@ -99,7 +99,6 @@ public class UserController {
 
 
         } else {
-            // TODO :该用户已存在，刷新该用户最新登录时间到日志log
             log.info("用户: Id="+user.getUserId()+",name = "+user.getUserName()+"于"+new Date()+"登录本平台");
             // 重新设置会话skey
             user.setSessionKey(skey);
