@@ -16,7 +16,7 @@ public interface TagService {
 
     TagInfo findOneById(Integer id);
 
-    List<TagInfo> findOneByContent(String content);
+    List<TagInfo> findByContent(String content);
 
     int update(TagInfo tag);
 

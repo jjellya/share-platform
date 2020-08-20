@@ -43,7 +43,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagInfo> findOneByContent(String content) {
+    public List<TagInfo> findByContent(String content) {
         List<TagInfo> tagList = null;
         tagList = tagMapper.getTagByContent(content);
         return tagList;

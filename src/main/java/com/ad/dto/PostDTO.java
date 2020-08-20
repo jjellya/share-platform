@@ -3,6 +3,7 @@ package com.ad.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Create By  @林俊杰
@@ -31,7 +32,7 @@ public class PostDTO {
     private Integer commentNum;
 
     /*标签内容*/
-    private String tag;
+    private List<String> tag;
 
     /*最近回复时间*/
     private Date updateTime;

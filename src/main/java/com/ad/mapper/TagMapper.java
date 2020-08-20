@@ -36,7 +36,7 @@ public interface TagMapper {
      * @param postId
      * @return
      */
-    public TagInfo getTagByPostId(Integer postId);
+    public List<TagInfo> getTagByPostId(Integer postId);
 
     /**
      * 添加Tag

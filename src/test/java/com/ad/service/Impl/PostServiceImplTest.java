@@ -1,5 +1,6 @@
 package com.ad.service.Impl;
 
+import com.ad.dto.PostDTO;
 import com.ad.pojo.PostInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,13 @@ class PostServiceImplTest {
     @Test
     void deleteById() {
         int result = postService.deleteById(2);
+        Assert.assertNotEquals(0,result);
+    }
+
+    @Test
+    void findListOrderByTime(){
+        List<PostDTO> result  = postService.findListOrderByTime(1,10);
+        System.out.println(result.toString());
         Assert.assertNotEquals(0,result);
     }
 }

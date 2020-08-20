@@ -7,6 +7,7 @@ import com.ad.pojo.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostInfo2PostDTOConverter {
 
-    public static PostDTO convert(PostInfo postInfo, UserInfo userInfo, TagInfo tagInfo){
+    public static PostDTO convert(PostInfo postInfo, UserInfo userInfo, List<TagInfo> tagInfoList){
 
             PostDTO postDTO = new PostDTO();
                     postDTO.setAvatarUrl(userInfo.getAvatarUrl());
@@ -27,7 +28,12 @@ public class PostInfo2PostDTOConverter {
                     postDTO.setCommentNum(postInfo.getCommentNum());
                     postDTO.setContent(postInfo.getPostContent());
                     postDTO.setPostId(postInfo.getPostId());
-                    postDTO.setTag(tagInfo.getTagContent());
+                    List<String> tagContentList = new ArrayList<>();
+                    for (TagInfo tag:tagInfoList
+                         ) {
+                            tagContentList.add(tag.getTagContent());
+                    }
+                    postDTO.setTag(tagContentList);
                     postDTO.setTitle(postInfo.getPostTitle());
                     postDTO.setUpdateTime(postInfo.getUpdateTime());
 

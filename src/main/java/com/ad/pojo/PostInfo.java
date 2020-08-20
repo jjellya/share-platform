@@ -25,11 +25,11 @@ public class PostInfo {
     /*内容*/
     private String postContent;
 
-    /*标签1*/
-    private String postTag1;
-
-    /*标签2*/
-    private String postTag2;
+//    /*标签1*/
+//    private String postTag1;
+//
+//    /*标签2*/
+//    private String postTag2;
 
     /*评论数*/
     private Integer commentNum;

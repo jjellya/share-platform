@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.TagLinkMapper">
+
+    <select id="getTagLinkById" resultType="com.ad.pojo.TagLink">
+      select * from tag_link where tlink_id = #{id}
+    </select>
+
+    <select id="getTagLinkByTagId" resultType="com.ad.pojo.TagLink">
+      select * from tag_link where tag_id = #{tagId}
+    </select>
+
+    <select id="getTagLinkByPostId" resultType="com.ad.pojo.TagLink">
+      select * from tag_link where post_id = #{postId}
+    </select>
+
+    <select id="getTagLinkByDocId" resultType="com.ad.pojo.TagLink">
+      select * from tag_link where doc_id = #{docId}
+    </select>
+
+
+    <insert id="addTagLink" parameterType="com.ad.pojo.TagLink" useGeneratedKeys="true" keyProperty="tlinkId">
+      insert into tag_link (tag_id,doc_id,post_id)
+      values (#{tagId},#{docId},#{postId})
+    </insert>
+
+
+    <update id="updateTagLink" parameterType="com.ad.pojo.TagLink">
+     update tag_link set tag_id=#{tagId},post_id=#{postId},doc_id=#{docId}
+     where tlink_id = #{tlinkId}
+    </update>
+
+    <delete id="deleteTagLinkById" >
+    delete from tag_link where tlink_id=#{id}
+    </delete>
+
+</mapper>

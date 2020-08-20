@@ -38,8 +38,8 @@ class TagServiceImplTest {
     }
 
     @Test
-    void findOneByContent() {
-        List<TagInfo> resultList = tagService.findOneByContent("易班");
+    void findByContent() {
+        List<TagInfo> resultList = tagService.findByContent("易班");
         Assert.assertNotEquals(0,resultList.size());
     }
 

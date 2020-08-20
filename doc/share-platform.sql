@@ -27,8 +27,6 @@ CREATE TABLE `post_info`
     `post_id`      	int(10)  not NULL AUTO_INCREMENT,
     `post_title`	varchar(128) not NULL COMMENT '帖子标题',
     `post_content` 	varchar(256) comment '帖子内容',
-    `post_tag1`		varchar(32) comment '帖子标签id1',
-    `post_tag2`		varchar(32) comment '帖子标签id2',
     `comment_num`	int(10) comment '评论数',
     `user_id`     int(10) NOT NULL COMMENT '帖主楼主ID',
     `create_time` timestamp not null default current_timestamp comment '创建时间',

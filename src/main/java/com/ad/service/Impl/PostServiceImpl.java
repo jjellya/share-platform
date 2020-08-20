@@ -116,15 +116,15 @@ public class PostServiceImpl implements PostService {
         }
 
         UserInfo tempUser;
-        TagInfo tempTag;
+        List<TagInfo> tempTagList;
         //TODO 可尝试优化数据库,利用数据库冗余字段通过list.stream().map(e->convert(e)).collect(Collectors.toList());来加快填充速度
         List<PostInfo> postList = postMapper.getPageOrderByTime(offset,size);
         if(postList.size()>0) {
             for (PostInfo post : postList
             ) {
                 tempUser = userMapper.getUserById(post.getUserId());
-                tempTag = tagMapper.getTagByPostId(post.getPostId());
-                postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTag));
+                tempTagList = tagMapper.getTagByPostId(post.getPostId());
+                postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTagList));
             }
         }
 
