@@ -1,10 +1,12 @@
 package com.ad.controller;
 
+import com.ad.VO.ResultVO;
 import com.ad.simulateLogin.Http;
 import com.ad.simulateLogin.HttpConfig;
 import com.ad.simulateLogin.Params;
 import com.ad.simulateLogin.impl.Base64;
 import com.ad.simulateLogin.impl.RSAUtils;
+import com.ad.utils.ResultVOUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +15,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
+import static com.ad.simulateLogin.YiBanConstent.yibanUserVO;
+
+/**
+ * @author WENZHIKUN
+ */
 @Controller
 public class SimulatLogin {
     String client_id = "64553ae7b9c472d3";
@@ -23,9 +29,9 @@ public class SimulatLogin {
     String state = "STATE";
     String spoce = "1,2,3,";
     String display = "html";
-    @RequestMapping(value = "/login",method = RequestMethod.POST,produces = "application/x-www-form-urlencoded;charset=UTF-8")
+    @RequestMapping(value = "/yiban/login",method = RequestMethod.POST)
     @ResponseBody
-    public String simulat(@RequestParam Map<String,String>map) throws Exception {
+    public ResultVO simulat(@RequestParam Map<String,String>map) throws Exception {
         //System.out.println(map.get("account"));
         // 首先获取到登陆页面的网页内容
         HttpConfig config = new HttpConfig("https://openapi.yiban.cn/oauth/authorize?client_id=64553ae7b9c472d3&redirect_uri=http://localhost:8088/adshare/callback&state=STATE");//请求的地址
@@ -76,11 +82,12 @@ public class SimulatLogin {
         //获取授权url
         String reUrl = jsonObject.getString("reUrl");
         //System.out.println(reUrl);
+        YiBanController yiBanController = new YiBanController();
         RestTemplate restTemplate = new RestTemplate();
         //访问reUrl
         restTemplate.getForEntity(reUrl,null);
         // System.out.println(html);
-        return null;//无返回界面
+        return ResultVOUtil.build(200,"登录成功",yibanUserVO);
     }
     public static String enCode(String password,String publicKey){
         String re = null;

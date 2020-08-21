@@ -6,6 +6,7 @@ import com.ad.VO.YibanUserVO;
 import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
+import com.ad.simulateLogin.YiBanConstent;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import okhttp3.OkHttpClient;
@@ -28,6 +29,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.ad.simulateLogin.YiBanConstent.yibanUserVO;
+
+/**
+ * @author WENZHIKUN
+ */
 
 @Controller
 @Slf4j
@@ -130,9 +137,6 @@ public class YiBanController {
             if(jobj_me.getString("yb_sex").compareTo("M")==0)
                 gender=0;
             else gender=1;
-            String city = null;
-            String country = null;
-            String province = null;
 
             userInfo = userService.addUser(openid,accessToken,avatarUrl,gender,nickName);
             session.setAttribute("userInfo",userService);
@@ -142,7 +146,7 @@ public class YiBanController {
             userInfo.setSessionKey(accessToken);
             userService.update(userInfo);
         }
-        YibanUserVO yibanUserVO = new YibanUserVO();
+        yibanUserVO = new YibanUserVO();
         yibanUserVO.setCode(code);
         yibanUserVO.setAccesstoken(accessToken);
         yibanUserVO.setOpenId(openid);
@@ -150,10 +154,14 @@ public class YiBanController {
         UserInfoVO userInfoVO = new UserInfoVO(userInfo);
         yibanUserVO.setUserInfoVO(userInfoVO);
 
-        ResultVO result = ResultVOUtil.build(200, "登录成功", yibanUserVO);
+        ResultVO resultVO = ResultVOUtil.build(200, "登录成功", yibanUserVO);
 
-        System.out.println("后台临时展示------->返回前端数据 ： "+result.getData().toString());
+        System.out.println("后台临时展示------->返回前端数据 ： "+resultVO.getData().toString());
         return ResultVOUtil.build(200, "登录成功", yibanUserVO);
+    }
+
+    public YibanUserVO getYibanUserVO() {
+        return yibanUserVO;
     }
 
     //使用post方法发送form-data

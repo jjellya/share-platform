@@ -29,6 +29,7 @@ class PostServiceImplTest {
     @Test
     void addPost() {
         PostInfo result = postService.addPost("TestTitle","TestContent",1);
+        System.out.println(result);
         Assert.assertNotNull(result);
     }
 
