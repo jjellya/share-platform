@@ -43,6 +43,11 @@
 
     修改了易班登录上已知bug
     添加帖子上传、修改年级、修改mail的controller
+    
+    添加关于用户评分的增删改查mapper
+    添加了有关用户评分以及推荐的业务层
+    更新了数据库表 v0.9.9.2
+
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 

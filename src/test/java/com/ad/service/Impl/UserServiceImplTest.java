@@ -28,4 +28,10 @@ class UserServiceImplTest {
         UserInfo result = service.findOneByOpenId("18102948");
         Assert.assertNotNull(result);
     }
+
+    @Test
+    void addUser() {
+        UserInfo result = service.addUser("18102951","1bd0ac3602792bfe4fa71dbbc287f9c1c7c82f87","http://img02.fs.yiban.cn/18102949/avatar/user/200",0,"郭富城");
+        Assert.assertNotNull(result);
+    }
 }

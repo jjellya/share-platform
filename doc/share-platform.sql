@@ -1,5 +1,5 @@
--- version : 0.9.9
--- update date :2020/08/19
+-- version : 0.9.9.2
+-- update date :2020/08/21
 -- author: 林俊杰
 
 -- 增加了openid,session_key字段
@@ -110,3 +110,14 @@ CREATE TABLE `ad_info`
     PRIMARY KEY (`ad_id`),
     key `idx_ad_title` (`ad_title`)
 ) comment '广告表' ;
+
+CREATE TABLE `user_score`
+(
+    `score_id`		int(10) NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+    `user_id`       int(10) NOT NULL COMMENT 'userId',
+    `post_id`       int(10) COMMENT '话题Id',
+    `doc_id`     	int(10) COMMENT '文件Id',
+    `score_type` 			tinyint(1) NULL DEFAULT 0 COMMENT '类型   0 话题 1 文件',
+    `score_value`   int(10)     NOT NULL DEFAULT 0 COMMENT '评分',
+    PRIMARY KEY (`score_id`)
+)  comment '用户评分向量元素表' ;

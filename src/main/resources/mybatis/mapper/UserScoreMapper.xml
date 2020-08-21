@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.UserScoreMapper">
+
+    <select id="getUserScoreById" resultType="com.ad.pojo.UserScore">
+      select * from user_score where score_id = #{id}
+    </select>
+
+    <select id="getUserScoreByUserId" resultType="com.ad.pojo.UserScore">
+      select * from user_score where user_id = #{userId}
+    </select>
+
+    <select id="getUserScoreByPostId" resultType="com.ad.pojo.UserScore">
+      select * from user_score where post_id = #{postId}
+    </select>
+
+    <select id="getUserScoreByDocId" resultType="com.ad.pojo.UserScore">
+      select * from user_score where doc_id = #{docId}
+    </select>
+
+    <select id="getExistScoreByUserId" resultType="com.ad.pojo.UserScore">
+      select * from user_score where user_id = #{userId} and score_value &gt; 0
+    </select>
+
+    <insert id="addUserScore" parameterType="com.ad.pojo.UserScore" useGeneratedKeys="true" keyProperty="scoreId">
+      insert into user_score(user_id,post_id,doc_id,score_type,score_value)
+      values (#{userId},#{postId},#{docId},#{scoreType},#{scoreValue})
+    </insert>
+
+    <update id="updateUserScore" parameterType="com.ad.pojo.UserScore">
+     update user_score set user_id=#{userId},post_id=#{postId},doc_id=#{docId},score_type=#{scoreType},score_value=#{scoreValue}
+          where score_id = #{scoreId}
+    </update>
+
+    <delete id="deleteUserScoreById" >
+    delete from user_score where score_id=#{id}
+    </delete>
+
+</mapper>

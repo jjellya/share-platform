@@ -2,12 +2,14 @@ package com.ad.service.Impl;
 
 import com.ad.dto.PostDTO;
 import com.ad.pojo.PostInfo;
+import javafx.scene.transform.MatrixType;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.MatrixVariable;
 
 import java.util.List;
 
@@ -76,5 +78,6 @@ class PostServiceImplTest {
         List<PostDTO> result  = postService.findListOrderByTime(1,10);
         System.out.println(result.toString());
         Assert.assertNotEquals(0,result);
+
     }
 }

@@ -58,8 +58,6 @@ class PostMapperTest {
         post.setCreateTime(new Date());
         post.setUpdateTime(post.getCreateTime());
         post.setPostContent("https://wx2.sbimg.cn/2020/08/17/3jUpM.jpg");
-        //post.setPostTag1(null);
-        //post.setPostTag2(null);
         post.setPostTitle("跪求期末试卷!");
         post.setUserId(2);
         int result = postMapper.addPost(post);
