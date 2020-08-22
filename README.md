@@ -49,6 +49,14 @@
     更新了数据库表 v0.9.9.2
 
 
+2020-8-22更新：
+
+    修改了用户登录控制层session的保存
+    添加了session的监听器以通过sessionID获取session
+    完善了推荐系统业务层并使用协同过滤推荐算法实现了目标用户的话题推荐
+    完善了社区控制层中的'推荐'栏目
+
+
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
 易班轻应用开发-AD镁铝硅磷小组

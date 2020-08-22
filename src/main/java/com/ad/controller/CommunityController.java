@@ -1,9 +1,12 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.config.MySessionContext;
 import com.ad.dto.PostDTO;
 import com.ad.enums.ClassificationEnum;
+import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.PostServiceImpl;
+import com.ad.service.Impl.RecommendServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ public class CommunityController {
     @Autowired
     private PostServiceImpl postService;
 
+    @Autowired
+    private RecommendServiceImpl recommendService;
+
     @GetMapping("api/user/community")
     @ResponseBody
     public ResultVO community(@RequestParam("grade") int grade,
@@ -47,7 +53,9 @@ public class CommunityController {
 
         }else if (classification == ClassificationEnum.ORDER_BY_SYS.getCode()){
             //TODO "推荐"栏目社区
-
+            String sessionId = request.getHeader("Cookie").split("=")[1];
+            UserInfo user = (UserInfo) MySessionContext.getSession(sessionId).getAttribute("userInfo") ;
+            postDTOList = recommendService.findListOrderByRecommend(groupNum,groupSize,user.getUserId());
         }else{
             log.error("请求参数错误,请检查设置");
         }

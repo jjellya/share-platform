@@ -11,6 +11,7 @@ package com.ad.controller;
 import com.ad.VO.ResultVO;
 import com.ad.VO.UserInfoVO;
 import com.ad.VO.WechatUserVO;
+import com.ad.config.MySessionContext;
 import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
@@ -83,6 +84,7 @@ public class UserController {
         String skey = UUID.randomUUID().toString();
 
         HttpSession session = request.getSession();
+        MySessionContext.addSession(session);
         String sessionId = session.getId();
 
         if (user == null) {
@@ -95,7 +97,7 @@ public class UserController {
             String province = rawDataJson.getString("province");
 
             user = userService.addUser(openid,skey,avatarUrl,Integer.parseInt(gender),nickName);
-            session.setAttribute("userInfo",user);
+//            session.setAttribute("userInfo",user);    warning!
 
 
         } else {
@@ -104,6 +106,7 @@ public class UserController {
             user.setSessionKey(skey);
             userService.update(user);
         }
+        session.setAttribute("userInfo",user);
         //encrypteData比rowData多了appid和openid
         //JSONObject userInfo = WechatUtil.getUserInfo(encrypteData, sessionKey, iv);
         //6. 把新的skey和sessionId、userInfo返回给小程序

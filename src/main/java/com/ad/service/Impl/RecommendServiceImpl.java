@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Create By  @林俊杰
@@ -41,6 +39,9 @@ public class RecommendServiceImpl implements RecommendService {
     @Autowired
     private TagMapper tagMapper;
 
+    @Autowired
+    private PostServiceImpl postService;
+
     @Override
     public List<PostDTO> findListOrderByRecommend(int offset, int size, int userId) {
         List<PostDTO> postDTOList = new ArrayList<>();
@@ -55,7 +56,7 @@ public class RecommendServiceImpl implements RecommendService {
 
         //Core
         //1.首先把该用户的浏览过(即有评分的)的数据集提取出来
-        int avgUserScore = 0;
+        float avgUserScore = 0f;
         int sumUserScore = 0;
         List<UserScore> userScoreList = scoreMapper.getExistScoreByUserId(userId);
 
@@ -69,9 +70,9 @@ public class RecommendServiceImpl implements RecommendService {
         }
 
         avgUserScore=sumUserScore/userPostIdList.size();
-        System.out.println("user's avg = "+avgUserScore);
+        //System.out.println("user's avg = "+avgUserScore);
 
-        System.out.println("user's actor--->"+userScoreMap.toString());
+        //System.out.println("user's actor--->"+userScoreMap.toString());
 
 
 
@@ -87,11 +88,11 @@ public class RecommendServiceImpl implements RecommendService {
         }
 
         //化为矩阵,Map<用户,话题Id,评分>
-        HashMap<Integer,List<HashMap<Integer,Integer>>> othersScoreMap = new HashMap<>();
+        HashMap<Integer,HashMap<Integer,Integer>> othersScoreMap = new HashMap<>();
 
         List<Integer> othersUserList = new ArrayList<>();
 
-        HashMap<Integer,Integer> avgOthersScore = new HashMap<>();
+        HashMap<Integer,Float> avgOthersScore = new HashMap<>();
 
 
             //与user相同的各个postId的对应的评分记录list
@@ -108,65 +109,175 @@ public class RecommendServiceImpl implements RecommendService {
                 //自己不要进去
                 if(commonScore.getUserId()==userId) continue;
 
-                HashMap<Integer,Integer> tempScoreMap = new HashMap<>();
-                List<HashMap<Integer,Integer>> lastMapList ;
-                tempScoreMap.put(commonScore.getPostId(),commonScore.getScoreValue());
+                HashMap<Integer,Integer> lastScoreMap ;
 
                 if(!othersUserList.contains(commonScore.getUserId())){
-                    avgOthersScore.put(commonScore.getUserId(),commonScore.getScoreValue());
+                    avgOthersScore.put(commonScore.getUserId(),(float)commonScore.getScoreValue());
                     othersUserList.add(commonScore.getUserId());
-                    lastMapList = new ArrayList<>();
+                    lastScoreMap =  new HashMap<>();
                 }else {
-                    int tempSum = avgOthersScore.get(commonScore.getUserId())+commonScore.getScoreValue();
+                    float tempSum = avgOthersScore.get(commonScore.getUserId())+commonScore.getScoreValue();
                     avgOthersScore.put(commonScore.getUserId(),tempSum);
-                    lastMapList = othersScoreMap.get(commonScore.getUserId());
+                    lastScoreMap = othersScoreMap.get(commonScore.getUserId());
                 }
 
-                    lastMapList.add(tempScoreMap);
+                lastScoreMap.put(commonScore.getPostId(),commonScore.getScoreValue());
 
-                othersScoreMap.put(commonScore.getUserId(),lastMapList);
+                othersScoreMap.put(commonScore.getUserId(),lastScoreMap);
 
             }
-            System.out.println();
+            //System.out.println();
         }
 
         for (Integer otherUserId:othersUserList
              ) {
-            System.out.println(otherUserId+"的总分 = "+avgOthersScore.get(otherUserId));
-            int avgTemp = avgOthersScore.get(otherUserId)/othersScoreMap.get(otherUserId).size();
+            //System.out.println(otherUserId+"的总分 = "+avgOthersScore.get(otherUserId));
+            float avgTemp = avgOthersScore.get(otherUserId)/othersScoreMap.get(otherUserId).size();
             avgOthersScore.put(otherUserId,avgTemp);
         }
 
-        //TODO delete it！
-        System.out.println("需要比较的用户集数量 = "+compareUserNum);
-        System.out.println("other用户列表长度="+othersUserList.size());
-        System.out.println("otherScoreMap  = "+othersScoreMap.toString());
-        for (Integer otherUserId: othersUserList
-             ) {
 
-            System.out.print("------->"+ otherUserId+":  "+othersScoreMap.get(otherUserId).toString());
-            System.out.print(" , map.size = "+othersScoreMap.get(otherUserId).size());
-            System.out.println(",  平均评分 = "+avgOthersScore.get(otherUserId));
+//        System.out.println("需要比较的用户集数量 = "+compareUserNum);
+//        System.out.println("other用户列表长度="+othersUserList.size());
+//        System.out.println("otherScoreMap  = "+othersScoreMap.toString());
+//        for (Integer otherUserId: othersUserList
+//             ) {
+//
+//            System.out.print("------->"+ otherUserId+":  "+othersScoreMap.get(otherUserId).toString());
+//            System.out.print(" , map.size = "+othersScoreMap.get(otherUserId).size());
+//            System.out.println(",  平均评分 = "+avgOthersScore.get(otherUserId));
+//        }
+
+
+        //3.计算Pearson相关系数
+        HashMap<Integer,Double> pearsonMap = new HashMap<>();
+        HashMap<Integer,Double> neighbourUserMap = new HashMap<>();
+        List<Integer> neighbourUserIdList =  new ArrayList<>();
+        Double minsimilarPearson = 65535.0;
+        Integer minsimilarPearsonUserId = 0;
+        int calculateCount = 0;
+
+        for (Integer otherUserId:othersUserList
+             ) {
+            //不要算太多了
+            if(neighbourUserMap.size()>10&&calculateCount>100) break;
+
+            if (othersScoreMap.get(otherUserId).size()>2){//小于2个相同话题的用户没有借鉴价值
+                calculateCount++;
+                float avgScore = avgOthersScore.get(otherUserId);
+                float sumUpScore = 0f;
+                float sumDownScoreA = 0f;
+                float sumDownScoreB = 0f;
+
+                HashMap<Integer,Integer> anotherScoreMap = othersScoreMap.get(otherUserId);
+
+                for (Integer postId: userPostIdList
+                ) {
+                    if (anotherScoreMap.containsKey(postId)){
+                        //总算开始计算了!啦啦啦啦~
+
+                        //计算分子的值
+                        sumUpScore += (anotherScoreMap.get(postId)-avgScore)*(userScoreMap.get(postId)-avgUserScore);
+                        //计算分母的值
+                        sumDownScoreA += (anotherScoreMap.get(postId)-avgScore)*(anotherScoreMap.get(postId)-avgScore);
+                        sumDownScoreB += (userScoreMap.get(postId)-avgUserScore)*(userScoreMap.get(postId)-avgUserScore);
+                    }
+                }
+
+                double pearson = sumUpScore/(Math.sqrt(sumDownScoreA)*Math.sqrt(sumDownScoreB));
+
+                //TODO,Pearson系数大于等于0.8,建议写入数据库以节省计算开销
+                if(neighbourUserMap.size()<=10){//选择10个邻居用户即可,太多的话会影响准确度，而且造成计算资源浪费
+                    if(pearson>0.60){
+                        neighbourUserMap.put(otherUserId,pearson);
+                        neighbourUserIdList.add(otherUserId);
+                        minsimilarPearson= pearson<minsimilarPearson?pearson:minsimilarPearson;
+                        minsimilarPearsonUserId = otherUserId;
+                    }
+                }else if(pearson> minsimilarPearson){
+                    neighbourUserMap.remove(minsimilarPearsonUserId);
+                    neighbourUserIdList.remove(minsimilarPearsonUserId);
+                    neighbourUserMap.put(otherUserId,pearson);
+                }
+                pearsonMap.put(otherUserId,pearson);
+            }
+            //System.out.println("用户"+otherUserId+"的Pearson系数："+pearsonMap.get(otherUserId));
+        }
+
+        //System.out.println("选取的相邻用户 ："+neighbourUserMap.toString());
+
+        //4.获取推荐内容话题
+        HashMap<Integer,HashMap<Integer,Integer>> neverBrowsedScoreMap = new HashMap<>();//map<postId,map<userId,score>>
+        List<Integer> neverBrowsedPostList = new ArrayList<>();
+        //获取该用户从未浏览过的post列表
+        for (Integer otherUserId:neighbourUserIdList
+             ) {
+            List<UserScore> neighbourScoreList = scoreMapper.getUserScoreByUserId(otherUserId);
+            for (UserScore userS:neighbourScoreList
+                 ) {
+               if(!userPostIdList.contains(userS.getPostId())){
+                   HashMap<Integer,Integer> tempNeighbourMap;
+
+                   if (!neverBrowsedPostList.contains(userS.getPostId())){
+                       neverBrowsedPostList.add(userS.getPostId());
+                       tempNeighbourMap = new HashMap<>();
+                   }else {
+                       tempNeighbourMap = neverBrowsedScoreMap.get(userS.getPostId());
+                   }
+                    tempNeighbourMap.put(userS.getUserId(),userS.getScoreValue());
+                   neverBrowsedScoreMap.put(userS.getPostId(),tempNeighbourMap);
+
+               }
+            }
+        }
+        System.out.println("用户没有浏览过的话题:"+neverBrowsedScoreMap.toString());
+
+        //计算预测分数
+        List<Integer> recommendPostIdList = new ArrayList<>();
+        double sumUpPred = 0f;
+        double sumDownPred = 0f;
+        for (Integer neverBrowsedPostId:neverBrowsedPostList
+             ) {
+            HashMap<Integer,Integer> tempNeverBrowsedPostScoreMap = neverBrowsedScoreMap.get(neverBrowsedPostId);
+
+            for (Integer neighbourUserId: neighbourUserIdList
+                 ) {
+                if (tempNeverBrowsedPostScoreMap.containsKey(neighbourUserId)){
+                    sumUpPred += (tempNeverBrowsedPostScoreMap.get(neighbourUserId)-avgOthersScore.get(neighbourUserId))*neighbourUserMap.get(neighbourUserId);
+                   // System.out.println("avg = "+avgOthersScore.get(neighbourUserId)+",up = "+sumUpPred);
+                    sumDownPred += neighbourUserMap.get(neighbourUserId);
+                   // System.out.println("down= "+sumDownPred);
+                }
+
+            }
+            double pred = avgUserScore+(sumUpPred/sumDownPred);
+            //System.out.println("话题"+neverBrowsedPostId+"的预测分数 = "+pred);
+            if (pred>avgUserScore+0.5||pred>5){
+                recommendPostIdList.add(neverBrowsedPostId);
+            }
         }
 
 
-        //TODO:3.计算Pearson相关系数
-
-
-
-
-
-        List<PostInfo> postList = new ArrayList<>();
+        //List<PostInfo> postList = new ArrayList<>();
        // List<PostInfo> postList = postMapper.getPageOrderByTime(offset,size);
-        if(postList.size()>0) {
-            for (PostInfo post : postList
+        int returnNum = 0;
+        if(recommendPostIdList.size()>0) {
+            for (Integer postId : recommendPostIdList
             ) {
+                if (returnNum>size) break;
+                returnNum++;
+                PostInfo post = postMapper.getPostById(postId);
                 tempUser = userMapper.getUserById(post.getUserId());
-                tempTagList = tagMapper.getTagByPostId(post.getPostId());
+                tempTagList = tagMapper.getTagByPostId(postId);
                 postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTagList));
             }
         }
 
+        if(postDTOList.size()<size){
+            postDTOList.addAll(postService.findListOrderByTime(1,size-postDTOList.size()));
+        }
+
+        //System.out.println(postDTOList.toString());
         return postDTOList;
     }
 }
