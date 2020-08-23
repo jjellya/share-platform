@@ -1,12 +1,14 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.config.AliyunConfig;
 import com.ad.utils.ResultVOUtil;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,9 @@ import java.io.InputStreamReader;
 @Slf4j
 public class DownLoadController {
 
+    @Autowired
+    private AliyunConfig aliyunConfig;
+
     @RequestMapping("/download")
     @ResponseBody
     public ResultVO download(@RequestParam(value = "docId",required = false)int docId,
@@ -31,11 +36,15 @@ public class DownLoadController {
         //通过文件ID获取文件的名称进行下载
 
         //OSS的访问地址
-        String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+        //String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+        String endpoint = aliyunConfig.getAliyunEndpoint();
         // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
-        String accessKeyId = "LTAI4G7DhdL2WTDiUrjrkiW4";
-        String accessKeySecret = "qrGx0wSkg5wF2NhDUwlpj3BMmg4joe";
-        String bucketName = "ad-share";
+        //String accessKeyId = "LTAI4G7DhdL2WTDiUrjrkiW4";
+        String accessKeyId = aliyunConfig.getAliyunAccessKeyId();
+        //String accessKeySecret = "qrGx0wSkg5wF2NhDUwlpj3BMmg4joe";
+        String accessKeySecret = aliyunConfig.getAliyunAccessKeySecret();
+        //String bucketName = "ad-share";
+        String bucketName = aliyunConfig.getAliyunBucket();
         //<yourObjectName>表示从OSS下载文件时需要指定包含文件后缀在内的完整路径，例如abc/efg/123.jpg。
         String objectName = "Hello.java";
 

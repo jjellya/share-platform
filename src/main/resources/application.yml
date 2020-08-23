@@ -69,3 +69,9 @@ mail:
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
+
+aliyun:
+  endpoint: http://oss-cn-shenzhen.aliyuncs.com
+  accessKeyId: LTAI4G7DhdL2WTDiUrjrkiW4
+  accessKeySecret: qrGx0wSkg5wF2NhDUwlpj3BMmg4joe
+  bucket: ad-share

@@ -6,6 +6,7 @@ import com.ad.service.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class TagServiceImpl implements TagService {
     private TagMapper tagMapper;
 
     @Override
+    @Transactional
     public TagInfo addTag(String content) {
         TagInfo tag = new TagInfo();
         tag.setTagContent(content);
@@ -50,6 +52,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public int update(TagInfo tag) {
         int updateNum = 0;
         try {

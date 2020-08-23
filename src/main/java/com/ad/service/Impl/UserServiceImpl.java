@@ -6,6 +6,7 @@ import com.ad.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
+    @Transactional
     public UserInfo addUser(String openid, String skey, String avatarUrl, Integer gender, String nickName) {
         UserInfo user = new UserInfo();
 
@@ -64,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int update(UserInfo user) {
         int updateNum = 0;
         try {

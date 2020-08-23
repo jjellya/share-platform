@@ -61,6 +61,11 @@
     完善了添加帖子的功能，实现图床
     Controller层增加了查看帖子详情以及文件上传下载
     文件上传下载待完善
+    
+    添加了文件增删查改mapper
+    添加了文件资源业务层
+    修改了上传下载Controller层的有关aliyun参数设置
+    
 
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)

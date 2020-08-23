@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.DocMapper">
+
+    <select id="getDocById" resultType="com.ad.pojo.DocInfo">
+      select * from doc_info where doc_id = #{id}
+    </select>
+
+    <select id="getDocByName" resultType="com.ad.pojo.DocInfo">
+      select * from doc_info where doc_name like '%' #{name} '%'
+    </select>
+
+    <select id="getDocByType" resultType="com.ad.pojo.DocInfo">
+      select * from doc_info where doc_type = #{docType}
+    </select>
+
+    <select id="getDocByUserId" resultType="com.ad.pojo.DocInfo">
+      select * from doc_info where user_id = #{userId}
+    </select>
+
+    <insert id="addDoc" parameterType="com.ad.pojo.DocInfo" useGeneratedKeys="true" keyProperty="docId">
+      insert into doc_info(doc_name,doc_type,doc_size,doc_path,download_num,star_num,user_id,upload_time)
+      values (#{docName},#{docType},#{docSize},#{docPath},#{downloadNum},#{starNum},#{userId},#{uploadTime})
+    </insert>
+
+    <update id="updateDoc" parameterType="com.ad.pojo.DocInfo">
+     update doc_info set doc_name=#{docName},doc_type=#{docType},doc_size=#{docSize},doc_path=#{docPath},
+     download_num=#{downloadNum},star_num=#{starNum},user_id=#{userId},upload_time=#{uploadTime}
+     where doc_id = #{docId}
+    </update>
+
+    <delete id="deleteDocById" >
+    delete from doc_info where doc_id=#{id}
+    </delete>
+
+
+</mapper>

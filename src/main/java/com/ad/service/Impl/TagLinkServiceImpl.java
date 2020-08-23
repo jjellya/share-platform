@@ -6,6 +6,7 @@ import com.ad.service.TagLinkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class TagLinkServiceImpl implements TagLinkService {
     private TagLinkMapper tagLinkMapper;
 
     @Override
+    @Transactional
     public TagLink addTagLinkToPost(Integer tagId, Integer postId) {
         TagLink tagLink = new TagLink();
         tagLink.setTagId(tagId);
@@ -37,6 +39,7 @@ public class TagLinkServiceImpl implements TagLinkService {
     }
 
     @Override
+    @Transactional
     public TagLink addTagLinkToDoc(Integer tagId, Integer docId) {
         TagLink tagLink = new TagLink();
         tagLink.setTagId(tagId);
@@ -66,6 +69,7 @@ public class TagLinkServiceImpl implements TagLinkService {
     }
 
     @Override
+    @Transactional
     public int update(TagLink tagLink) {
         int updateNum = 0;
         try {
@@ -79,6 +83,7 @@ public class TagLinkServiceImpl implements TagLinkService {
     }
 
     @Override
+    @Transactional
     public int deleteById(Integer id) {
         int deleteNum = 0;
         try {

@@ -12,6 +12,7 @@ import com.ad.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,7 @@ public class PostServiceImpl implements PostService {
     private TagMapper tagMapper;
 
     @Override
+    @Transactional
     public PostInfo addPost(String postTitle, String postContent, Integer userId) {
         PostInfo post = new PostInfo();
 
@@ -81,6 +83,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public int update(PostInfo post) {
         int updateNum = 0;
         try {
@@ -94,6 +97,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public int deleteById(Integer id) {
         int deleteNum = 0;
         try {
