@@ -24,7 +24,7 @@ public class UserGradeController {
     UserServiceImpl userService;
 
     @ResponseBody
-    @RequestMapping(value = "/api/user/grade",method = RequestMethod.POST)
+    @PostMapping("/user/grade")
     public ResultVO userGrade(@RequestParam(value = "userId",required = false)int userId,
                               @RequestParam(value = "grade",required = false)int grade){
         //System.out.println(userId);
