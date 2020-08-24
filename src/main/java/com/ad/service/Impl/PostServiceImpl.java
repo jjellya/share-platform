@@ -134,4 +134,41 @@ public class PostServiceImpl implements PostService {
 
         return postDTOList;
     }
+
+    @Override
+    public List<PostDTO> findListOrderByTimeAndGrade(int offset, int size, int grade) {
+        List<PostDTO> postDTOList = new ArrayList<>();
+
+        if(size == 0){
+            log.error("请求错误,size = 0");
+            return postDTOList;
+        }
+
+        UserInfo tempUser;
+        List<TagInfo> tempTagList;
+        //TODO 可尝试优化数据库,利用数据库冗余字段通过list.stream().map(e->convert(e)).collect(Collectors.toList());来加快填充速度
+        List<PostInfo> postList = null;
+        if (grade==1){
+            postList =postMapper.getPageOrderByTimeAndGrade(offset,size,"大一");
+        }else if (grade==2){
+            postList =postMapper.getPageOrderByTimeAndGrade(offset,size,"大二");
+        }else if (grade==3){
+            postList =postMapper.getPageOrderByTimeAndGrade(offset,size,"大三");
+        }else if (grade==4){
+            postList =postMapper.getPageOrderByTimeAndGrade(offset,size,"大四");
+        }else {
+            postList =postList=postMapper.getPageOrderByTime(offset,size);
+        }
+
+        if(postList!=null&&postList.size()>0) {
+            for (PostInfo post : postList
+            ) {
+                tempUser = userMapper.getUserById(post.getUserId());
+                tempTagList = tagMapper.getTagByPostId(post.getPostId());
+                postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTagList));
+            }
+        }
+
+        return postDTOList;
+    }
 }

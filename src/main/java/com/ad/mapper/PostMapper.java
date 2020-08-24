@@ -77,4 +77,14 @@ public interface PostMapper {
      * @return
      */
     public List<PostInfo> getPageOrderByTime(Integer offset,Integer size);
+
+    /**
+     * 时间倒排展示post
+     * @param offset
+     * @param size
+     * @param content
+     * @return
+     */
+    public List<PostInfo> getPageOrderByTimeAndGrade(Integer offset,Integer size,String content);
+
 }

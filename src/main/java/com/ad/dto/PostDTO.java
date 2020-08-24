@@ -22,6 +22,9 @@ public class PostDTO {
     /*内容*/
     private String content;
 
+    /*图片内容*/
+    private String img;
+
     /*帖主名称*/
     private String username;
 
@@ -35,5 +38,5 @@ public class PostDTO {
     private List<String> tag;
 
     /*最近回复时间*/
-    private Date updateTime;
+    private String updateTime;
 }

@@ -30,4 +30,6 @@ public interface PostService {
     int deleteById(Integer id);
 
     List<PostDTO> findListOrderByTime(int offset,int size);
+
+    List<PostDTO> findListOrderByTimeAndGrade(int offset,int size,int grade);
 }

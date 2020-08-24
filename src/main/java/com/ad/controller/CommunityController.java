@@ -1,5 +1,6 @@
 package com.ad.controller;
 
+import com.ad.VO.CommunityVO;
 import com.ad.VO.ResultVO;
 import com.ad.config.MySessionContext;
 import com.ad.dto.PostDTO;
@@ -65,6 +66,9 @@ public class CommunityController {
             return ResultVOUtil.errorMsg("获取社区信息失败");
         }
 
-        return ResultVOUtil.success(postDTOList);
+        CommunityVO communityVO = new CommunityVO();
+        communityVO.setTotal(postDTOList.size());
+        communityVO.setPostDTOList(postDTOList);
+        return ResultVOUtil.success(communityVO);
     }
 }

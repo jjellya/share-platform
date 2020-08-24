@@ -1,12 +1,38 @@
 {
   "groups": [
     {
+      "name": "aliyun",
+      "type": "com.ad.config.AliyunConfig",
+      "sourceType": "com.ad.config.AliyunConfig"
+    },
+    {
       "name": "spring.datasource",
       "type": "javax.sql.DataSource",
       "sourceType": "com.ad.config.DruidConfig",
       "sourceMethod": "druid()"
     }
   ],
-  "properties": [],
+  "properties": [
+    {
+      "name": "aliyun.aliyun-access-key-id",
+      "type": "java.lang.String",
+      "sourceType": "com.ad.config.AliyunConfig"
+    },
+    {
+      "name": "aliyun.aliyun-access-key-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.ad.config.AliyunConfig"
+    },
+    {
+      "name": "aliyun.aliyun-bucket",
+      "type": "java.lang.String",
+      "sourceType": "com.ad.config.AliyunConfig"
+    },
+    {
+      "name": "aliyun.aliyun-endpoint",
+      "type": "java.lang.String",
+      "sourceType": "com.ad.config.AliyunConfig"
+    }
+  ],
   "hints": []
 }

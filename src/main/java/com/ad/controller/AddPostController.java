@@ -11,6 +11,7 @@ import com.ad.service.Impl.PostServiceImpl;
 import com.ad.service.Impl.TagLinkServiceImpl;
 import com.ad.service.Impl.TagServiceImpl;
 import com.ad.service.Impl.UserServiceImpl;
+import com.ad.utils.MyDateUtil;
 import com.ad.utils.ResultVOUtil;
 import com.aliyuncs.profile.IClientProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,16 +44,16 @@ public class AddPostController {
     //创建帖子
 
     @Autowired
-    PostServiceImpl postService;
+    private PostServiceImpl postService;
 
     @Autowired
-    TagServiceImpl tagService;
+    private TagServiceImpl tagService;
 
     @Autowired
-    TagLinkServiceImpl tagLinkService;
+    private TagLinkServiceImpl tagLinkService;
 
     @Autowired
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @RequestMapping(value = "/api/addpost",method = RequestMethod.POST)
     @ResponseBody
@@ -151,7 +152,7 @@ public class AddPostController {
         postDTO.setPostId(postInfo.getPostId());
         postDTO.setTag(postTag);
         postDTO.setTitle(postInfo.getPostTitle());
-        postDTO.setUpdateTime(postInfo.getUpdateTime());
+        postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
         postDTO.setUsername(userInfo.getUserName());
 
         return ResultVOUtil.build(200,"success",postDTO);

@@ -66,7 +66,12 @@
     添加了文件资源业务层
     修改了上传下载Controller层的有关aliyun参数设置
     
-
+2020-8-24更新：
+    
+    修改了postDTO的传输格式
+    修改了日期显示格式
+    添加了communityVO类
+    添加了按'年级'分类社区
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 

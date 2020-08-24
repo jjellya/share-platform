@@ -44,4 +44,8 @@ resultType:返回值类型
       select * from post_info  order by update_time desc,post_id desc limit ${(offset-1)*size},${size}
     </select>
 
+    <select id="getPageOrderByTimeAndGrade" resultType="com.ad.pojo.PostInfo">
+      select * from post_info where post_id in (select post_id from tag_link where tag_id in (select tag_id from tag_info where tag_content like '%' #{content} '%'))  order by update_time desc,post_id desc limit ${(offset-1)*size},${size}
+    </select>
+
 </mapper>

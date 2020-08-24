@@ -10,6 +10,7 @@ import com.ad.service.Impl.PostServiceImpl;
 import com.ad.service.Impl.TagLinkServiceImpl;
 import com.ad.service.Impl.TagServiceImpl;
 import com.ad.service.Impl.UserServiceImpl;
+import com.ad.utils.MyDateUtil;
 import com.ad.utils.ResultVOUtil;
 import jdk.internal.dynalink.support.LinkerServicesImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +33,16 @@ import java.util.List;
 public class PostDetailController {
 
     @Autowired
-    PostServiceImpl postService;
+    private PostServiceImpl postService;
 
     @Autowired
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    TagLinkServiceImpl tagLinkService;
+    private TagLinkServiceImpl tagLinkService;
 
     @Autowired
-    TagServiceImpl tagService;
+    private TagServiceImpl tagService;
 
     @RequestMapping(value = "/api/postdetails",method = RequestMethod.POST)
     @ResponseBody
@@ -62,7 +63,7 @@ public class PostDetailController {
         }
 
         postDTO.setUsername(userInfo.getUserName());
-        postDTO.setUpdateTime(postInfo.getUpdateTime());
+        postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
         postDTO.setTag(tag);
         postDTO.setTitle(postInfo.getPostTitle());
         postDTO.setPostId(postId);

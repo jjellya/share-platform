@@ -4,6 +4,7 @@ import com.ad.dto.PostDTO;
 import com.ad.pojo.PostInfo;
 import com.ad.pojo.TagInfo;
 import com.ad.pojo.UserInfo;
+import com.ad.utils.MyDateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +27,19 @@ public class PostInfo2PostDTOConverter {
                     postDTO.setAvatarUrl(userInfo.getAvatarUrl());
                     postDTO.setUsername(userInfo.getUserName());
                     postDTO.setCommentNum(postInfo.getCommentNum());
-                    postDTO.setContent(postInfo.getPostContent());
+                    String content ;String img;
+                    if (postInfo.getPostContent().contains("+")){
+                         content = postInfo.getPostContent().split("\\+")[0];
+                         img = postInfo.getPostContent().split("\\+")[1];
+                    }else if (postInfo.getPostContent().contains("http")){
+                        content = null;
+                        img = postInfo.getPostContent();
+                    }else {
+                        content = postInfo.getPostContent();
+                        img = null;
+                    }
+                    postDTO.setContent(content);
+                    postDTO.setImg(img);
                     postDTO.setPostId(postInfo.getPostId());
                     List<String> tagContentList = new ArrayList<>();
                     for (TagInfo tag:tagInfoList
@@ -35,7 +48,8 @@ public class PostInfo2PostDTOConverter {
                     }
                     postDTO.setTag(tagContentList);
                     postDTO.setTitle(postInfo.getPostTitle());
-                    postDTO.setUpdateTime(postInfo.getUpdateTime());
+        System.out.println(postInfo.getUpdateTime().getTime());
+                    postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
 
             return postDTO;
     }
