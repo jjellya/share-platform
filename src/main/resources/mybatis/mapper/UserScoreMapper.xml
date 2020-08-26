@@ -28,6 +28,10 @@ resultType:返回值类型
       select * from user_score where user_id = #{userId} and score_value &gt; 0
     </select>
 
+    <select id="getUserScoreByUserIdAndPostId" resultType="com.ad.pojo.UserScore">
+      select * from user_score where user_id = #{userId} and post_id = #{postId}
+    </select>
+
     <insert id="addUserScore" parameterType="com.ad.pojo.UserScore" useGeneratedKeys="true" keyProperty="scoreId">
       insert into user_score(user_id,post_id,doc_id,score_type,score_value)
       values (#{userId},#{postId},#{docId},#{scoreType},#{scoreValue})

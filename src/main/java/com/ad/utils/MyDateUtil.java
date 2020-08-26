@@ -87,8 +87,8 @@ public class MyDateUtil {
      * @return
      */
     public static String convertTimeToFormat(long timeStamp) {
-        long curTime =System.currentTimeMillis() / (long) 1000 ;
-        long time = curTime - (timeStamp/(long)1000);
+        long curTime = System.currentTimeMillis();
+        long time = (curTime - timeStamp) / (long) 1000;
 
         if (time < 60 && time >= 0) {
             return "刚刚";

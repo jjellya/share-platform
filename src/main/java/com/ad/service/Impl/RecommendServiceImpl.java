@@ -2,6 +2,7 @@ package com.ad.service.Impl;
 
 import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.PostDTO;
+import com.ad.enums.ScoreEnum;
 import com.ad.mapper.PostMapper;
 import com.ad.mapper.TagMapper;
 import com.ad.mapper.UserMapper;
@@ -11,9 +12,12 @@ import com.ad.pojo.TagInfo;
 import com.ad.pojo.UserInfo;
 import com.ad.pojo.UserScore;
 import com.ad.service.RecommendService;
+import com.ad.utils.MyDateUtil;
+import com.sun.istack.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -43,7 +47,7 @@ public class RecommendServiceImpl implements RecommendService {
     private PostServiceImpl postService;
 
     @Override
-    public List<PostDTO> findListOrderByRecommend(int offset, int size, int userId) {
+    public List<PostDTO> findListOrderByRecommend(int offset, int size, int userId,int grade) {
         List<PostDTO> postDTOList = new ArrayList<>();
 
         if(size == 0){
@@ -274,10 +278,110 @@ public class RecommendServiceImpl implements RecommendService {
         }
 
         if(postDTOList.size()<size){
-            postDTOList.addAll(postService.findListOrderByTime(1,size-postDTOList.size()));
+            postDTOList.addAll(postService.findListOrderByTimeAndGrade(1,size-postDTOList.size(),grade));
         }
 
         //System.out.println(postDTOList.toString());
         return postDTOList;
+    }
+
+    @Override
+    @Transactional
+    public UserScore addScore(int userId, int scoreType,@Nullable int postId,@Nullable int docId) {
+        UserScore score1 = new UserScore();
+        score1.setUserId(userId);
+        score1.setScoreType(scoreType);
+        if (scoreType==0) {
+            score1.setPostId(postId);
+        }
+        else if(scoreType==1) {
+            score1.setDocId(docId);
+        }
+        score1.setScoreValue(ScoreEnum.CLICK.getCode());
+
+        if(scoreMapper.addUserScore(score1)>0){
+            log.info("用户ID = "+userId+"于 "+new Date()+" 点击了 postID = "+score1.getPostId()+",docID = "+score1.getDocId());
+        }else {
+            log.error("用户行为检测失败");
+        }
+
+        return score1;
+    }
+
+    @Override
+    @Transactional
+    public int clickAgain(int scoreId) {
+        int updateNum = 0;
+
+        try {
+            UserScore score1 = scoreMapper.getUserScoreById(scoreId);
+            score1.setScoreValue(score1.getScoreValue()+ScoreEnum.CLICK.getCode());
+            updateNum = scoreMapper.updateUserScore(score1);
+        }catch (Exception e){
+            log.error("scoreId ="+scoreId+"的评分更新失败或未找到该评分项!");
+        }finally {
+            return updateNum;
+        }
+    }
+
+    @Override
+    @Transactional
+    public int addComment(int scoreId) {
+        int updateNum = 0;
+
+        try {
+            UserScore score1 = scoreMapper.getUserScoreById(scoreId);
+            score1.setScoreValue(score1.getScoreValue()+ScoreEnum.REPLY.getCode());
+            updateNum = scoreMapper.updateUserScore(score1);
+        }catch (Exception e){
+            log.error("scoreId ="+scoreId+"的评分更新失败或未找到该评分项!");
+        }finally {
+            return updateNum;
+        }
+    }
+
+    @Override
+    @Transactional
+    public int addStar(int scoreId) {
+        int updateNum = 0;
+
+        try {
+            UserScore score1 = scoreMapper.getUserScoreById(scoreId);
+            score1.setScoreValue(score1.getScoreValue()+ScoreEnum.STAR.getCode());
+            updateNum = scoreMapper.updateUserScore(score1);
+        }catch (Exception e){
+            log.error("scoreId ="+scoreId+"的评分更新失败或未找到该评分项!");
+        }finally {
+            return updateNum;
+        }
+    }
+
+    @Override
+    public int update(UserScore userScore) {
+        int updateNum = 0;
+        try {
+            updateNum = scoreMapper.updateUserScore(userScore);
+        }catch (Exception e){
+            log.error("scoreId ="+userScore+"的评分项更新失败或未找到该评分项!");
+        }finally {
+            return updateNum;
+        }
+    }
+
+    @Override
+    public UserScore findOneByUserIdAndPostId(int userId, int postId) {
+        UserScore score = null;
+        try {
+            score = scoreMapper.getUserScoreByUserIdAndPostId(userId, postId);
+        }catch (Exception e){
+            log.error("未找到 userID= "+userId+"postID = "+postId+"的相关评分记录");
+        }finally {
+            return score;
+        }
+    }
+
+    @Override
+    public int deleteById(int id) {
+        return scoreMapper.deleteUserScoreById(id);
     }
 }

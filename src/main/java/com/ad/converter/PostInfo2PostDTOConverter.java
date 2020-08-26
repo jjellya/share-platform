@@ -29,12 +29,12 @@ public class PostInfo2PostDTOConverter {
                     postDTO.setCommentNum(postInfo.getCommentNum());
                     String content ;String img;
                     if (postInfo.getPostContent().contains("+")){
-                         content = postInfo.getPostContent().split("\\+")[0];
-                         img = postInfo.getPostContent().split("\\+")[1];
-                    }else if (postInfo.getPostContent().contains("http")){
-                        content = null;
-                        img = postInfo.getPostContent();
-                    }else {
+                        img = postInfo.getPostContent().split("\\+")[postInfo.getPostContent().split("\\+").length-1];
+                        if (postInfo.getPostContent().length()-img.length()-1-1>0)
+                        content =  postInfo.getPostContent().substring(0,postInfo.getPostContent().length()-img.length()-1-1);
+                        else content = null;
+                    }
+                    else {
                         content = postInfo.getPostContent();
                         img = null;
                     }
@@ -48,7 +48,6 @@ public class PostInfo2PostDTOConverter {
                     }
                     postDTO.setTag(tagContentList);
                     postDTO.setTitle(postInfo.getPostTitle());
-        System.out.println(postInfo.getUpdateTime().getTime());
                     postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
 
             return postDTO;

@@ -52,6 +52,14 @@ public interface UserScoreMapper {
     public List<UserScore> getExistScoreByUserId(Integer userId);
 
     /**
+     * 通过userId和postId查找Score
+     * @param userId
+     * @param postId
+     * @return
+     */
+    public UserScore getUserScoreByUserIdAndPostId(Integer userId,Integer postId);
+
+    /**
      * 添加user
      * @param userScore
      * @return

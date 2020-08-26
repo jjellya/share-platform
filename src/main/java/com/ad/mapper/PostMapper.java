@@ -87,4 +87,13 @@ public interface PostMapper {
      */
     public List<PostInfo> getPageOrderByTimeAndGrade(Integer offset,Integer size,String content);
 
+    /**
+     * 作者展示post
+     * @param offset
+     * @param size
+     * @param userId
+     * @return
+     */
+    public List<PostInfo> getPageOrderByAuthor(Integer offset,Integer size,Integer userId);
+
 }

@@ -171,4 +171,31 @@ public class PostServiceImpl implements PostService {
 
         return postDTOList;
     }
+
+
+    @Override
+    public List<PostDTO> findListOrderByAuthor(int offset, int size, int userId) {
+
+        List<PostDTO> postDTOList = new ArrayList<>();
+
+        if(size == 0){
+            log.error("请求错误,size = 0");
+            return postDTOList;
+        }
+
+
+        UserInfo tempUser;
+        List<TagInfo> tempTagList;
+        //TODO 可尝试优化数据库,利用数据库冗余字段通过list.stream().map(e->convert(e)).collect(Collectors.toList());来加快填充速度
+        List<PostInfo> postList = postMapper.getPageOrderByAuthor(offset,size,userId);
+        if(postList!=null&&postList.size()>0) {
+            for (PostInfo post : postList
+            ) {
+                tempUser = userMapper.getUserById(post.getUserId());
+                tempTagList = tagMapper.getTagByPostId(post.getPostId());
+                postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTagList));
+            }
+        }
+        return postDTOList;
+    }
 }
