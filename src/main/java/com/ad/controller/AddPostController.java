@@ -2,6 +2,7 @@ package com.ad.controller;
 
 
 import com.ad.VO.ResultVO;
+import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.PostDTO;
 import com.ad.pojo.PostInfo;
 import com.ad.pojo.TagInfo;
@@ -61,7 +62,27 @@ public class AddPostController {
                             @RequestParam(value = "postContent",required = false)String postContent,
                             @RequestParam(value = "userId",required = false)int userId,
                             @RequestParam(value = "postTag",required = false) List<String> postTag,
-                            @RequestParam(value = "picture",required = false)MultipartFile picture) throws IOException {
+                            @RequestParam(value = "picture",required = false)MultipartFile[] pictures) throws IOException {
+        System.out.println(postTitle+ " : "+postTitle.length());
+        if (pictures.length>1){
+            //文件限制一个
+            return ResultVOUtil.build(501,"error","文件数量多");
+        }
+        if (postContent.length()>255){
+            //内容限制字数255个字
+            return ResultVOUtil.build(501,"error","内容字数超标");
+        }
+        if(postTitle.length()>20){
+            //标题限制字数20个字
+            return ResultVOUtil.build(501,"error","题目长度超标");
+        }
+        for (int i=0;i<postTag.size();i++){
+            //限制标签长度8个字
+            if (postTag.get(i).length()>8){
+                return ResultVOUtil.build(501,"error","标签长度过长");
+            }
+        }
+        MultipartFile picture = pictures[0];
         //图片的url
         String pUrl = null;
         //上传图片到SMMS图床
@@ -120,17 +141,20 @@ public class AddPostController {
             e.printStackTrace();
         }
         if(pUrl!=null){
-            //System.out.println("pUrl : "+pUrl);
+            System.out.println("pUrl : "+pUrl);
             //将图片url加在内容后面
             postContent = postContent + "+" + pUrl;
         }
+
 
 
         //创建帖子
         PostDTO postDTO = new PostDTO();
         PostInfo postInfo = postService.addPost(postTitle,postContent,userId);
 
-        //创建标签
+        //创建标签列表
+        //List<TagInfo>tagInfoList = new ArrayList<>();
+        //为每个标签内容创建帖子
         for (int i=0;i<postTag.size();i++){
             TagInfo tagInfo = tagService.addTag(postTag.get(i));
             //创建标签和帖子链接
@@ -146,16 +170,18 @@ public class AddPostController {
         System.out.println(userInfo.getPostNum());
 
         //设置帖子信息
-        postDTO.setAvatarUrl(userInfo.getAvatarUrl());
-        postDTO.setCommentNum(postInfo.getCommentNum());
-        postDTO.setContent(postInfo.getPostContent());
-        postDTO.setPostId(postInfo.getPostId());
-        postDTO.setTag(postTag);
-        postDTO.setTitle(postInfo.getPostTitle());
-        postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
-        postDTO.setUsername(userInfo.getUserName());
+//        postDTO.setAvatarUrl(userInfo.getAvatarUrl());
+//        postDTO.setCommentNum(postInfo.getCommentNum());
+//        postDTO.setContent(postInfo.getPostContent());
+//        postDTO.setPostId(postInfo.getPostId());
+//        postDTO.setTag(postTag);
+//        postDTO.setTitle(postInfo.getPostTitle());
+//        postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
+//        postDTO.setUsername(userInfo.getUserName());
+        //PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
+        int postId = postInfo.getPostId();
 
-        return ResultVOUtil.build(200,"success",postDTO);
+        return ResultVOUtil.build(200,"success",postId);
     }
     /**
      * change bodyformat hashMap to RequestBody objects
