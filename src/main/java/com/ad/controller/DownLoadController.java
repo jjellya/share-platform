@@ -46,6 +46,7 @@ public class DownLoadController {
     public ResultVO download(@RequestParam(value = "docId",required = false)int docId,
                              @RequestParam(value = "userId",required = false)int userId) throws IOException {
         DocInfo docInfo = docService.findOneById(docId);
+        System.out.println(docInfo.toString());
         //UserInfo userInfo = userService.findOneById(userId);
         //通过文件ID获取文件的名称进行下载
 
@@ -65,12 +66,14 @@ public class DownLoadController {
 
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-        // 设置URL过期时间为10年 3600l* 1000*24*365*10
 
-        Date expiration = new Date(System.currentTimeMillis() + 3600L * 1000 * 24 * 365 * 10);
+        // 设置URL过期时间为10年
+        System.out.println(new Date().getTime());
+        Date expiration = new Date(new Date().getTime()+60*1000);
+        System.out.println(expiration);
         // 生成URL
-        URL url = ossClient.generatePresignedUrl(bucketName, key, expiration);
-        System.out.println(url);
+        URL url = ossClient.generatePresignedUrl(bucketName, "Hello.java", expiration);
+        System.out.println("url : "+url);
 
 //        // 下载OSS文件到本地文件。如果指定的本地文件存在会覆盖，不存在则新建。
 //        ossClient.getObject(new GetObjectRequest(bucketName, objectName), new File("D:\\下载\\"+objectName));
@@ -92,6 +95,9 @@ public class DownLoadController {
 //        reader.close();
         // 关闭OSSClient。
         ossClient.shutdown();
-        return ResultVOUtil.build(200,"success","success");
+
+        docInfo.setDownloadNum(docInfo.getDownloadNum()+1);
+        docService.update(docInfo);
+        return ResultVOUtil.build(200,"success","文件链接（三分钟内有效） :   "+url);
     }
 }
