@@ -11,8 +11,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.codec.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -30,9 +28,9 @@ public class WechatUtil {
         Map<String, String> requestUrlParam = new HashMap<>();
         // https://mp.weixin.qq.com/wxopen/devprofile?action=get_profile&token=164113089&lang=zh_CN
         //小程序appId
-        requestUrlParam.put("appid", "wx4da30075f5929440");
+        requestUrlParam.put("appid","wx42a4770500b90ee6 ");
         //小程序secret
-        requestUrlParam.put("secret", "b45ede314b37fc30daf0b3c667fe0734");
+        requestUrlParam.put("secret","65331602444534e1e4ee77ce7b7f3f28");
         //小程序端返回的code
         requestUrlParam.put("js_code", code);
         //默认参数

@@ -3,6 +3,7 @@ package com.ad.controller;
 import com.ad.VO.ResultVO;
 import com.ad.VO.UserInfoVO;
 import com.ad.VO.YibanUserVO;
+import com.ad.config.MySessionContext;
 import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
@@ -124,6 +125,7 @@ public class YiBanController {
         HttpServletRequest re = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         //获取sessionId
         HttpSession session = re.getSession();
+        MySessionContext.addSession(session);
         sessionId = session.getId();
         if(userInfo==null){
             //获取当前年份
