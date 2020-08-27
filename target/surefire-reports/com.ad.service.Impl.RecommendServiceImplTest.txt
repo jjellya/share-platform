@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.ad.service.Impl.RecommendServiceImplTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.191 s - in com.ad.service.Impl.RecommendServiceImplTest
+Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.823 s <<< FAILURE! - in com.ad.service.Impl.RecommendServiceImplTest
+findOneByUserIdAndPostId  Time elapsed: 0.004 s  <<< FAILURE!
+java.lang.AssertionError
+	at com.ad.service.Impl.RecommendServiceImplTest.findOneByUserIdAndPostId(RecommendServiceImplTest.java:56)
+

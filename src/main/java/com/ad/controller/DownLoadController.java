@@ -98,6 +98,6 @@ public class DownLoadController {
 
         docInfo.setDownloadNum(docInfo.getDownloadNum()+1);
         docService.update(docInfo);
-        return ResultVOUtil.build(200,"success","文件链接（三分钟内有效） :   "+url);
+        return ResultVOUtil.build(200,"success",url);
     }
 }

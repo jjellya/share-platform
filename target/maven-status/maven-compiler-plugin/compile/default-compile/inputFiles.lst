@@ -42,6 +42,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\TagLinkMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\IEncryptNoKey.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\LinkInfo.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\PostDetailsVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\tools\FileMimeType.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\UserScoreMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\PostDetailController.java
@@ -68,6 +69,5 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\CommentI
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\converter\PostInfo2PostDTOConverter.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\UserMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\DocInfo.java
-F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\TestApi.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\UserServiceImpl.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\utils\MyDateUtil.java
