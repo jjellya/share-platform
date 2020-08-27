@@ -2,6 +2,7 @@ package com.ad.controller;
 
 import com.ad.VO.ResultVO;
 import com.ad.config.AliyunConfig;
+import com.ad.pojo.DocInfo;
 import com.ad.service.Impl.DocServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import com.aliyun.oss.OSS;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,20 +34,26 @@ public class UploadController {
     @Autowired
     private DocServiceImpl docService;
 
-
-
     @RequestMapping("/upload")
     @ResponseBody
     public ResultVO upload(@RequestParam(value = "file",required = false)MultipartFile file,
                            @RequestParam(value = "fileName",required = false)String fileName,
-                           @RequestParam(value = "fileType",required = false)String fileType,
+                           @RequestParam(value = "fileType",required = false,defaultValue = "1")int fileType,
                            @RequestParam(value = "fileGrade",required = false)String fileGrade,
                            @RequestParam(value = "subject",required = false)String subject,
-                           @RequestParam(value = "briefIntro",required = false)String briefIntro) throws IOException {
-        //设置文件名 key
-        //使用设置的文件名，以及原赖的文件格式
-        String key = fileName +"."+ file.getOriginalFilename().split("\\.")[1];
-        System.out.println(key);
+                           @RequestParam(value = "briefIntro",required = false)String briefIntro,
+                           @RequestParam(value = "userId",required = false,defaultValue = "1")int userId) throws IOException {
+        if (fileName.length()>255){
+            return ResultVOUtil.build(501,"error","文件名过长");
+        }
+        if (briefIntro.length()>255){
+            return ResultVOUtil.build(501,"error","简介字数过长");
+        }
+        //设置文件的key
+        System.out.println("测试------>文件大小"+file.getSize());
+        String filePath = "adshare/" + userId + "/";
+        String key = filePath + fileName +"."+ file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+        System.out.println("测试------------------>上传的文件名："+key);
         //1.查询文件是否存在
         //---->String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
         String endpoint = aliyunConfig.getAliyunEndpoint();
@@ -62,27 +70,18 @@ public class UploadController {
         boolean found = ossClient.doesObjectExist(bucket, key);
         //System.out.println(found);
         if(!found){
-            //2.如果文件不存在就上传文件
-
-            // 创建PutObjectRequest对象。
-            //PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key,(File) file);
-
-            // 如果需要上传时设置存储类型与访问权限，请参考以下示例代码。
-            // ObjectMetadata metadata = new ObjectMetadata();
-            // metadata.setHeader(OSSHeaders.OSS_STORAGE_CLASS, StorageClass.Standard.toString());
-            // metadata.setObjectAcl(CannedAccessControlList.Private);
-            // putObjectRequest.setMetadata(metadata);
-
-            // 上传文件。
-            //ossClient.putObject(putObjectRequest);
-
+            //如果文件不存在就上传
             //上传文件流
             ossClient.putObject(bucket,key,file.getInputStream());
             System.out.println("file upload success !");
-
+        }else{
+            System.out.println("The file is exist !");
         }
         // 关闭OSSClient。
         ossClient.shutdown();
+
+        DocInfo docInfo = docService.addDoc(fileName,fileType,(int)file.getSize(),filePath,userId);
+
 
         return ResultVOUtil.build(200,"sucess","sucess");
     }

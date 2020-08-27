@@ -42,8 +42,7 @@ public class PostInfo2PostDTOConverter {
                     postDTO.setImg(img);
                     postDTO.setPostId(postInfo.getPostId());
                     List<String> tagContentList = new ArrayList<>();
-                    for (TagInfo tag:tagInfoList
-                         ) {
+                    for (TagInfo tag:tagInfoList) {
                             tagContentList.add(tag.getTagContent());
                     }
                     postDTO.setTag(tagContentList);

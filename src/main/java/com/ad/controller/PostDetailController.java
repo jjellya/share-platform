@@ -1,11 +1,9 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.PostDTO;
-import com.ad.pojo.PostInfo;
-import com.ad.pojo.TagInfo;
-import com.ad.pojo.TagLink;
-import com.ad.pojo.UserInfo;
+import com.ad.pojo.*;
 import com.ad.service.Impl.PostServiceImpl;
 import com.ad.service.Impl.TagLinkServiceImpl;
 import com.ad.service.Impl.TagServiceImpl;
@@ -52,24 +50,18 @@ public class PostDetailController {
         PostDTO postDTO = new PostDTO();
         //贴主信息
         UserInfo userInfo = userService.findOneById(postInfo.getUserId());
-        //通过帖子Id 获得 TagLink
-        List<TagLink>tagLinks = tagLinkService.findByPostId(postId);
-        List<String>tag = new ArrayList<>();
-        TagInfo tagInfo;
-        for(int i=0;i<tagLinks.size();i++){
-            //通过taglink 获得 tagid，从而获得taginfo
-            tagInfo = tagService.findOneById(tagLinks.get(i).getTagId());
-            tag.add(tagInfo.getTagContent());
+
+        //通过postId获取tagLink
+        List<TagLink>tagLinkList = tagLinkService.findByPostId(postId);
+        List<TagInfo>tagInfoList = new ArrayList<>();
+        System.out.println(postId);
+        for (int i=0;i<tagLinkList.size();i++){
+            tagInfoList.add(tagService.findOneById(tagLinkList.get(i).getTagId()));
+            System.out.println(tagInfoList.get(i).getTagId()+" : " +tagInfoList.get(i).getTagContent());
         }
 
-        postDTO.setUsername(userInfo.getUserName());
-        postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
-        postDTO.setTag(tag);
-        postDTO.setTitle(postInfo.getPostTitle());
-        postDTO.setPostId(postId);
-        postDTO.setContent(postInfo.getPostContent());
-        postDTO.setCommentNum(postInfo.getCommentNum());
-        postDTO.setAvatarUrl(userInfo.getAvatarUrl());
+
+        postDTO= PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
 
         return ResultVOUtil.build(200,"success",postDTO);
     }
