@@ -1,19 +1,18 @@
 package com.ad.controller;
 
+import com.ad.VO.PostDetailsVO;
 import com.ad.VO.ResultVO;
 import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.PostDTO;
 import com.ad.pojo.*;
-import com.ad.service.Impl.PostServiceImpl;
-import com.ad.service.Impl.TagLinkServiceImpl;
-import com.ad.service.Impl.TagServiceImpl;
-import com.ad.service.Impl.UserServiceImpl;
+import com.ad.service.Impl.*;
 import com.ad.utils.MyDateUtil;
 import com.ad.utils.ResultVOUtil;
 import jdk.internal.dynalink.support.LinkerServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +41,9 @@ public class PostDetailController {
     @Autowired
     private TagServiceImpl tagService;
 
+    @Autowired
+    CommentServiceImpl commentService;
+
     @RequestMapping(value = "/api/postdetails",method = RequestMethod.POST)
     @ResponseBody
     public ResultVO details(@RequestParam(value = "postId",required = false)int postId){
@@ -54,7 +56,7 @@ public class PostDetailController {
         //通过postId获取tagLink
         List<TagLink>tagLinkList = tagLinkService.findByPostId(postId);
         List<TagInfo>tagInfoList = new ArrayList<>();
-        System.out.println(postId);
+        if (tagLinkList.size()>=1)
         for (int i=0;i<tagLinkList.size();i++){
             tagInfoList.add(tagService.findOneById(tagLinkList.get(i).getTagId()));
             System.out.println(tagInfoList.get(i).getTagId()+" : " +tagInfoList.get(i).getTagContent());
@@ -63,6 +65,12 @@ public class PostDetailController {
 
         postDTO= PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
 
-        return ResultVOUtil.build(200,"success",postDTO);
+        List<CommentInfo>commentInfoList = commentService.findByPostId(postId);
+
+        PostDetailsVO postDetailsVO = new PostDetailsVO();
+        postDetailsVO.setPostDTO(postDTO);
+        postDetailsVO.setList(commentInfoList);
+
+        return ResultVOUtil.build(200,"success",postDetailsVO);
     }
 }

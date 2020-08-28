@@ -1,9 +1,10 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.VO.UploadVO;
 import com.ad.config.AliyunConfig;
-import com.ad.pojo.DocInfo;
-import com.ad.service.Impl.DocServiceImpl;
+import com.ad.pojo.*;
+import com.ad.service.Impl.*;
 import com.ad.utils.ResultVOUtil;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.management.remote.rmi._RMIConnection_Stub;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,21 @@ public class UploadController {
     @Autowired
     private DocServiceImpl docService;
 
+    @Autowired
+    private PostServiceImpl postService;
+
+    @Autowired
+    private TagLinkServiceImpl tagLinkService;
+
+    @Autowired
+    private TagServiceImpl tagService;
+
+    @Autowired
+    private CommentServiceImpl commentService;
+
+    @Autowired
+    private UserServiceImpl userService;
+
     @RequestMapping("/upload")
     @ResponseBody
     public ResultVO upload(@RequestParam(value = "file",required = false)MultipartFile file,
@@ -42,7 +60,8 @@ public class UploadController {
                            @RequestParam(value = "fileGrade",required = false)String fileGrade,
                            @RequestParam(value = "subject",required = false)String subject,
                            @RequestParam(value = "briefIntro",required = false)String briefIntro,
-                           @RequestParam(value = "userId",required = false,defaultValue = "1")int userId) throws IOException {
+                           @RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
+                           @RequestParam(value = "postId",required = false,defaultValue = "0")int postId) throws IOException {
         if (fileName.length()>255){
             return ResultVOUtil.build(501,"error","文件名过长");
         }
@@ -81,8 +100,39 @@ public class UploadController {
         ossClient.shutdown();
 
         DocInfo docInfo = docService.addDoc(fileName,fileType,(int)file.getSize(),filePath,userId);
+        TagInfo tagInfoSubject = tagService.addTag(subject);
+        TagInfo tagInfoGrade = tagService.addTag(fileGrade);
+        //创建标签和文件的关联
+        tagLinkService.addTagLinkToDoc(tagInfoSubject.getTagId(),docInfo.getDocId());
+        tagLinkService.addTagLinkToDoc(tagInfoGrade.getTagId(),docInfo.getDocId());
+        CommentInfo commentInfo;
+        //用户发表的资源数量加一
+        UserInfo userInfo = userService.findOneById(userId);
+        userInfo.setDocNum(userInfo.getDocNum()+1);
+        //如果postId是0说明是单独发表资源,进行帖子发表
+        if (postId==0) {
+            //说明帖子不存在，需要发表帖子
+            PostInfo postInfo = postService.addPost(docInfo.getDocName(),briefIntro,userId);
+            commentInfo = commentService.addComment(postInfo.getPostId(),userId,docInfo.getDocId(),1,briefIntro);
+            postInfo.setCommentNum(0);
+            postService.update(postInfo);
+            //更新postId
+            postId = postInfo.getPostId();
+            //用户发表的帖子数量加一
+           userInfo.setPostNum(userInfo.getPostNum()+1);
+        }else{
+            //评论类型为1，设置为附带资源类型
+            commentInfo = commentService.addComment(postId,userId,docInfo.getDocId(),1,briefIntro);
 
+        }
+        userService.update(userInfo);
+        log.info("ID为 " +userId +"的用户,于"+ new Date() +
+                "上传了文件" + docInfo.getDocName()+" 到 "+docInfo.getDocPath() +"中");
+        UploadVO uploadVO = new UploadVO();
+        uploadVO.setCommentId(commentInfo.getCommentId());
+        uploadVO.setDocId(docInfo.getDocId());
+        uploadVO.setPostId(postId);
 
-        return ResultVOUtil.build(200,"sucess","sucess");
+        return ResultVOUtil.build(200,"sucess",uploadVO);
     }
 }

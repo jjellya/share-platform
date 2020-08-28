@@ -72,7 +72,7 @@ public class DownLoadController {
         Date expiration = new Date(new Date().getTime()+60*1000);
         System.out.println(expiration);
         // 生成URL
-        URL url = ossClient.generatePresignedUrl(bucketName, "Hello.java", expiration);
+        URL url = ossClient.generatePresignedUrl(bucketName, key , expiration);
         System.out.println("url : "+url);
 
 //        // 下载OSS文件到本地文件。如果指定的本地文件存在会覆盖，不存在则新建。
@@ -98,6 +98,8 @@ public class DownLoadController {
 
         docInfo.setDownloadNum(docInfo.getDownloadNum()+1);
         docService.update(docInfo);
+        log.info("ID为 "+userId + "的用户，于"+new Date() +
+                "对文件" +docInfo.getDocPath()+ docInfo.getDocName() + "进行下载链接的获取,链接有效时间为3分钟。");
         return ResultVOUtil.build(200,"success",url);
     }
 }
