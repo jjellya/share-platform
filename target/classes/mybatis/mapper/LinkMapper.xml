@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.LinkMapper">
+    <select id="getLinkById" resultType="com.ad.pojo.LinkInfo">
+      select * from link_info where link_id = #{id}
+    </select>
+
+
+    <select id="getLinkByUserId" resultType="com.ad.pojo.LinkInfo">
+      select * from link_info where user_id = #{userId}
+    </select>
+
+    <select id="getLinkByDocId" resultType="com.ad.pojo.LinkInfo">
+      select * from link_info where doc_id = #{docId}
+    </select>
+
+    <select id="getLinkByUserIdAndDocId" resultType="com.ad.pojo.LinkInfo">
+      select * from link_info where user_id = #{userId} and doc_id = #{docId}
+    </select>
+
+    <insert id="addLink" parameterType="com.ad.pojo.LinkInfo" useGeneratedKeys="true" keyProperty="linkId">
+      insert into link_info (doc_id,user_id)
+      values (#{docId},#{userId})
+    </insert>
+
+    <update id="updateLink" parameterType="com.ad.pojo.LinkInfo">
+     update link_info set user_id=#{userId},doc_id=#{docId}
+     where link_id = #{linkId}
+    </update>
+
+    <delete id="deleteLinkById" >
+    delete from link_info where link_id=#{id}
+    </delete>
+
+</mapper>
