@@ -85,6 +85,13 @@
     修改添加帖子、文件上传、文件下载controller
 
 
+2020-8-28更新：
+
+    添加了评论的mapper
+    添加了评论的业务层并测试通过
+    修复了一些已知bug,添加冷启动策略
+    
+    
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
 易班轻应用开发-AD镁铝硅磷小组

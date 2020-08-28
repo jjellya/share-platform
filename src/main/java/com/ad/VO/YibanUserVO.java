@@ -12,7 +12,7 @@ public class YibanUserVO {
     @JsonProperty("accesstoken")
     private String accesstoken;
 
-    @JsonProperty("sessionid")
+    @JsonProperty("sessionId")
     private String sessionid;
 
     @JsonProperty("openId")

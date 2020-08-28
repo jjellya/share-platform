@@ -24,7 +24,7 @@ public interface TagMapper {
 
 
     /**
-     * 通过标题查找post
+     * 通过标题查找Tag
      * @param content
      * @return
      */
