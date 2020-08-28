@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +43,10 @@ public class SubjectController {
                             @RequestParam(value = "year",required = false)String year){
         if (year.length()!=4){
             return ResultVOUtil.build(501,"error","年份信息错误，需要四位数的年份");
+        }else if (Integer.parseInt(year)>(Calendar.getInstance().get(Calendar.YEAR))){
+            return ResultVOUtil.build(200,"success","想看未来的题目？不存在的~");
+        }else if (Integer.parseInt(year)<2020){
+            return ResultVOUtil.build(200,"success","年代过于久远，您想寻找的资源已穿越~");
         }
         //找出带有subject标签对应的文件ID
         List<TagInfo>tagInfoList = tagService.findByContent(subject);
@@ -51,15 +57,38 @@ public class SubjectController {
         List<DocInfo>docInfoList = new ArrayList<>();
         DocInfo docInfo = null;
         List<TagLink>tagLinkList = null;
+        Calendar calendar = Calendar.getInstance();
         //选择处符合年份的文件信息
         for (int i=0;i<tagInfoList.size();i++){
             //获取关联该标签的列表
             tagLinkList = tagLinkService.findByTagId(tagInfoList.get(i).getTagId());
+            if (tagLinkList.size()==0)
+                continue;
+            //System.out.println("size = "+tagLinkList.size());
             for (int j=0;j<tagLinkList.size();j++){
-
+                //System.out.println(j);
+                if (tagLinkList.get(j).getDocId()==null){
+                    //System.out.println("------------------------true-----------------------");
+                    if (i==tagLinkList.size()-1)
+                        break;
+                    else continue;
+                }
+                //System.out.println("后台测试：-------------------> "+tagLinkList.get(j));
+                docInfo = docService.findOneById(tagLinkList.get(j).getDocId());
+                //System.out.println(docInfo);
+                //System.out.println(docInfo.getUploadTime().getYear());
+                calendar.setTime(docInfo.getUploadTime());
+                //System.out.println(calendar.get(Calendar.YEAR));
+                if (calendar.get(Calendar.YEAR)==Integer.parseInt(year)){
+                    docInfoList.add(docInfo);
+                    System.out.println("符号时间要求的文件------------>"+docInfo);
+                }
             }
         }
-        return ResultVOUtil.build(200,"success","success");
+        if (docInfoList.size()==0){
+            return ResultVOUtil.build(200,"success","not found");
+        }
+        return ResultVOUtil.build(200,"success",docInfoList);
     }
 
 }
