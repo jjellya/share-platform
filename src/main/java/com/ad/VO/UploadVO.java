@@ -18,4 +18,10 @@ public class UploadVO {
 
     @JsonProperty("commentId")
     private int commentId;
+
+    @JsonProperty("docName")
+    private String docName;
+
+    @JsonProperty("starNum")
+    private int starNum;
 }

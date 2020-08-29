@@ -33,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -61,28 +62,30 @@ public class AddPostController {
     public ResultVO addPost(@RequestParam(value = "postTitle",required = false)String postTitle,
                             @RequestParam(value = "postContent",required = false)String postContent,
                             @RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
-                            @RequestParam(value = "postTag",required = false) List<String> postTag,
-                            @RequestParam(value = "file",required = false)MultipartFile[] pictures) throws IOException {
-        if (pictures.length>1){
+                            @RequestParam(value = "postTag",required = false)List<String> postTag,
+                            @RequestParam(value = "file",required = false) MultipartFile[] pictures) throws IOException {
+        //判断是否接受到文件
+        if (pictures==null){
+            System.out.println("the file is null !");
+        }else if (pictures.length>1){
             //文件限制一个
             return ResultVOUtil.build(501,"error","文件数量多");
         }
+        //System.out.println(postContent);
         if (postContent.length()>255){
             //内容限制字数255个字
             return ResultVOUtil.build(501,"error","内容字数超标");
+        }else if (postContent.length()==0){
+            return ResultVOUtil.errorMsg("内容不能为空");
         }
         if(postTitle.length()>20){
             //标题限制字数20个字
             return ResultVOUtil.build(501,"error","题目长度超标");
+        }else if (postTitle.length()==0){
+            return ResultVOUtil.errorMsg("标题不能为空");
         }
-        for (int i=0;i<postTag.size();i++){
-            System.out.println(postTag.get(i));
-            //限制标签长度8个字
-            if (postTag.get(i).length()>8){
-                return ResultVOUtil.build(501,"error","标签长度过长");
-            }
-        }
-        if (pictures.length>0){
+
+        if (pictures!=null){
             MultipartFile picture = pictures[0];
             //图片的url
             String pUrl = null;
@@ -169,20 +172,23 @@ public class AddPostController {
                 " 帖子数加一，帖子数量变更为 "+ userInfo.getPostNum());
         System.out.println(userInfo.getPostNum());
 
-        //设置帖子信息
-//        postDTO.setAvatarUrl(userInfo.getAvatarUrl());
-//        postDTO.setCommentNum(postInfo.getCommentNum());
-//        postDTO.setContent(postInfo.getPostContent());
-//        postDTO.setPostId(postInfo.getPostId());
-//        postDTO.setTag(postTag);
-//        postDTO.setTitle(postInfo.getPostTitle());
-//        postDTO.setUpdateTime(MyDateUtil.convertTimeToFormat(postInfo.getUpdateTime().getTime()));
-//        postDTO.setUsername(userInfo.getUserName());
-        //PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
-        int postId = postInfo.getPostId();
+        //进用户的年级添加到帖子标签中
+        String gradeStr;
+        if (userInfo.getUserGrade()==null || userInfo.getUserGrade() ==1) gradeStr="大一";
+        else if (userInfo.getUserGrade()==2) gradeStr="大二";
+        else if (userInfo.getUserGrade()==3) gradeStr="大三";
+        else gradeStr="大四";
 
-        return ResultVOUtil.build(200,"success",postId);
+        TagInfo tagInfoGrade = tagService.addTag(gradeStr);
+        tagLinkService.addTagLinkToPost(tagInfoGrade.getTagId(),postInfo.getPostId());
+
+        return ResultVOUtil.build(200,"success",postInfo.getPostId());
     }
+
+
+
+
+
     /**
      * change bodyformat hashMap to RequestBody objects
      * @param bodyFormat the body hashMap, if use none, put("none",""), if form-data, put(key,value)

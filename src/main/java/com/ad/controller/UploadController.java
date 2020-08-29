@@ -62,11 +62,18 @@ public class UploadController {
                            @RequestParam(value = "briefIntro",required = false)String briefIntro,
                            @RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                            @RequestParam(value = "postId",required = false,defaultValue = "0")int postId) throws IOException {
+        if (fileName==null){
+            return ResultVOUtil.errorMsg("请输入文件名");
+        }else{
+            System.out.println("测试数据 -------------> "+fileName);
+        }
         if (fileName.length()>255){
             return ResultVOUtil.build(501,"error","文件名过长");
         }
-        if (briefIntro.length()>255){
+        if (briefIntro.length()>255&&briefIntro!=null){
             return ResultVOUtil.build(501,"error","简介字数过长");
+        }else{
+            briefIntro="";
         }
         //设置文件的key
         System.out.println("测试------>文件大小"+file.getSize());
@@ -132,6 +139,8 @@ public class UploadController {
         uploadVO.setCommentId(commentInfo.getCommentId());
         uploadVO.setDocId(docInfo.getDocId());
         uploadVO.setPostId(postId);
+        uploadVO.setDocName(docInfo.getDocName());
+        uploadVO.setStarNum(0);
 
         return ResultVOUtil.build(200,"sucess",uploadVO);
     }

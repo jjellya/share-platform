@@ -1,9 +1,13 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.converter.CommentInfo2CommentDTOConverter;
+import com.ad.dto.CommentDTO;
 import com.ad.pojo.CommentInfo;
+import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.CommentServiceImpl;
 import com.ad.service.Impl.PostServiceImpl;
+import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class CommentController {
 
     @Autowired
-    PostServiceImpl postService;
+    private PostServiceImpl postService;
 
     @Autowired
-    CommentServiceImpl commentService;
+    private CommentServiceImpl commentService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @RequestMapping("/api/comment")
     @ResponseBody
@@ -40,9 +47,11 @@ public class CommentController {
         //创建评论
         //没有文件关联，因此设置为0，类型为无附带文件因此为0
         CommentInfo commentInfo = commentService.addComment(postId,userId,0,0,content);
-        System.out.println(commentInfo);
-
-        return ResultVOUtil.build(200,"success",commentInfo.getCommentId());
+        System.out.println("测试数据------------------------>"+commentInfo);
+        UserInfo userInfo = userService.findOneById(userId);
+        CommentDTO commentDTO = CommentInfo2CommentDTOConverter.convert(userInfo,commentInfo);
+        System.out.println("测试数据------------------------->"+commentDTO);
+        return ResultVOUtil.build(200,"success",commentDTO);
     }
 
 }

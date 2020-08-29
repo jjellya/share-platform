@@ -94,6 +94,11 @@
     修复了一些已知bug,添加冷启动策略
     添加star、评论、科目跳转页面controller
     修改了upload，适应在文件单独上传以及评论上传的不同情况
+    
+2020-8-29更新:
+    
+    添加首页Controller
+    修改AddPost和UploadCotroller中的已知bug
 
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
