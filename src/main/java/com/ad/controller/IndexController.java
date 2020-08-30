@@ -4,17 +4,10 @@ import com.ad.VO.AdvertisementVO;
 import com.ad.VO.IndexPostVO;
 import com.ad.VO.ResultVO;
 import com.ad.converter.PostInfo2PostDTOConverter;
-import com.ad.dto.AdvertisementDTO;
 import com.ad.dto.PostDTO;
-import com.ad.pojo.PostInfo;
-import com.ad.pojo.TagInfo;
-import com.ad.pojo.TagLink;
-import com.ad.pojo.UserInfo;
+import com.ad.pojo.*;
 import com.ad.service.Impl.*;
-import com.ad.service.TagLinkService;
-import com.ad.service.UserService;
 import com.ad.utils.ResultVOUtil;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,10 +107,12 @@ public class IndexController {
 
     @RequestMapping("/index/recommend")
     @ResponseBody
-    public ResultVO recommend(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId){
-        System.out.println(recommendService.findOneByUserIdAndPostId(userId,1));
-
-        return ResultVOUtil.build(200,"success","succcess");
+    public ResultVO recommend(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
+                              @RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
+                              @RequestParam(value = "index",required = false,defaultValue = "1")int index,
+                              @RequestParam(value = "size",required = false,defaultValue = "0")int size){
+        List<PostDTO> postDTOList = recommendService.findListOrderByRecommend(index,size,userId,grade);
+        return ResultVOUtil.build(200,"success",postDTOList);
     }
 
     @RequestMapping("/index/advertisement")
@@ -125,10 +120,10 @@ public class IndexController {
     private ResultVO advertisement(){
 
         AdvertisementVO advertisementVO = new AdvertisementVO();
-        List<AdvertisementDTO>advertisementDTOList = new ArrayList<>();
+        List<AdInfo>adInfoList = new ArrayList<>();
         //手动添加广告
         advertisementVO.setTotal(0);
-        advertisementVO.setAdvertisementDTOList(advertisementDTOList);
+        advertisementVO.setAdInfoList(adInfoList);
 
         return ResultVOUtil.build(200,"success",advertisementVO);
     }

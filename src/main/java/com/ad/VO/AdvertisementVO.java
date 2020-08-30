@@ -1,6 +1,6 @@
 package com.ad.VO;
 
-import com.ad.dto.AdvertisementDTO;
+import com.ad.pojo.AdInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -16,6 +16,6 @@ public class AdvertisementVO {
     private int total;
 
     @JsonProperty("advertiseDTOList")
-    private List<AdvertisementDTO>advertisementDTOList;
+    private List<AdInfo>adInfoList;
 
 }

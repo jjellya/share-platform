@@ -154,7 +154,8 @@ public class AddPostController {
         //创建帖子
         PostDTO postDTO = new PostDTO();
         PostInfo postInfo = postService.addPost(postTitle,postContent,userId);
-
+        postInfo.setCommentNum(0);
+        postService.update(postInfo);
         //创建标签列表
         //List<TagInfo>tagInfoList = new ArrayList<>();
         //为每个标签内容创建帖子
@@ -182,7 +183,7 @@ public class AddPostController {
         TagInfo tagInfoGrade = tagService.addTag(gradeStr);
         tagLinkService.addTagLinkToPost(tagInfoGrade.getTagId(),postInfo.getPostId());
 
-        return ResultVOUtil.build(200,"success",postInfo.getPostId());
+        return ResultVOUtil.build(200,"success",postInfo);
     }
 
 
