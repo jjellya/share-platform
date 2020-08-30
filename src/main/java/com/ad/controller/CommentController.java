@@ -4,6 +4,7 @@ import com.ad.VO.ResultVO;
 import com.ad.converter.CommentInfo2CommentDTOConverter;
 import com.ad.dto.CommentDTO;
 import com.ad.pojo.CommentInfo;
+import com.ad.pojo.PostInfo;
 import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.CommentServiceImpl;
 import com.ad.service.Impl.PostServiceImpl;
@@ -51,6 +52,12 @@ public class CommentController {
         UserInfo userInfo = userService.findOneById(userId);
         CommentDTO commentDTO = CommentInfo2CommentDTOConverter.convert(userInfo,commentInfo);
         System.out.println("测试数据------------------------->"+commentDTO);
+
+        //评论数量改变
+        PostInfo postInfo = postService.findOneById(postId);
+        postInfo.setCommentNum(postInfo.getCommentNum()+1);
+        postService.update(postInfo);
+
         return ResultVOUtil.build(200,"success",commentDTO);
     }
 

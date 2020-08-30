@@ -128,8 +128,11 @@ public class UploadController {
             //用户发表的帖子数量加一
            userInfo.setPostNum(userInfo.getPostNum()+1);
         }else{
+            PostInfo postInfo = postService.findOneById(postId);
             //评论类型为1，设置为附带资源类型
             commentInfo = commentService.addComment(postId,userId,docInfo.getDocId(),1,briefIntro);
+            postInfo.setCommentNum(postInfo.getCommentNum()+1);
+            postService.update(postInfo);
 
         }
         userService.update(userInfo);

@@ -2,12 +2,10 @@ package com.ad.controller;
 
 import com.ad.VO.DocDetailsVO;
 import com.ad.VO.ResultVO;
-import com.ad.pojo.DocInfo;
-import com.ad.pojo.TagInfo;
-import com.ad.pojo.TagLink;
-import com.ad.service.Impl.DocServiceImpl;
-import com.ad.service.Impl.TagLinkServiceImpl;
-import com.ad.service.Impl.TagServiceImpl;
+import com.ad.converter.CommentInfo2CommentDTOConverter;
+import com.ad.dto.CommentDTO;
+import com.ad.pojo.*;
+import com.ad.service.Impl.*;
 import com.ad.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,12 +33,18 @@ public class DocDetails {
     @Autowired
     private TagLinkServiceImpl tagLinkService;
 
+    @Autowired
+    private CommentServiceImpl commentService;
+
+    @Autowired
+    private UserServiceImpl userService;
+
     @RequestMapping("/api/docdetails")
     @ResponseBody
     public ResultVO docdetails(@RequestParam(value = "docId",required = false,defaultValue = "1")int docId){
 
         DocInfo docInfo = docService.findOneById(docId);
-
+        UserInfo userInfo = userService.findOneById(docInfo.getUserId());
         DocDetailsVO docDetailsVO = new DocDetailsVO();
         docDetailsVO.setDocInfo(docInfo);
         List<TagInfo>tagInfoList = new ArrayList<>();
@@ -52,6 +56,9 @@ public class DocDetails {
             tagInfoList.add(tagService.findOneById(tagLinkList.get(i).getTagId()));
         }
         docDetailsVO.setTagInfoList(tagInfoList);
+        CommentInfo commentInfo = commentService.findByDocId(docId).get(0);
+        CommentDTO commentDTO = CommentInfo2CommentDTOConverter.convert(userInfo,commentInfo);
+        docDetailsVO.setCommentDTO(commentDTO);
         return ResultVOUtil.build(200,"success",docDetailsVO);
     }
 }

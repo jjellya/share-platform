@@ -1,5 +1,7 @@
 package com.ad.VO;
 
+import com.ad.dto.CommentDTO;
+import com.ad.pojo.CommentInfo;
 import com.ad.pojo.DocInfo;
 import com.ad.pojo.TagInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,5 +21,8 @@ public class DocDetailsVO {
 
     @JsonProperty("tagInfoList")
     private List<TagInfo> tagInfoList;
+
+    @JsonProperty("commentDTO")
+    private CommentDTO commentDTO;
 
 }
