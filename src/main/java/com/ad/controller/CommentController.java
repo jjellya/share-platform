@@ -8,11 +8,13 @@ import com.ad.pojo.PostInfo;
 import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.CommentServiceImpl;
 import com.ad.service.Impl.PostServiceImpl;
+import com.ad.service.Impl.RecommendServiceImpl;
 import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,8 +37,12 @@ public class CommentController {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private RecommendServiceImpl recommendService;
+
     @RequestMapping("/api/comment")
     @ResponseBody
+    @Transactional
     public ResultVO comment(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                             @RequestParam(value = "postId",required = false,defaultValue = "1")int postId,
                             @RequestParam(value = "content",required = false)String content){
@@ -57,6 +63,8 @@ public class CommentController {
         PostInfo postInfo = postService.findOneById(postId);
         postInfo.setCommentNum(postInfo.getCommentNum()+1);
         postService.update(postInfo);
+        //评论则对该话题评分+2
+        recommendService.addComment(recommendService.findOneByUserIdAndPostId(userId,postId).getScoreId());
 
         return ResultVOUtil.build(200,"success",commentDTO);
     }

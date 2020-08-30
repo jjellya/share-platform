@@ -1,6 +1,8 @@
 package com.ad.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,8 +13,9 @@ import javax.persistence.Id;
  *
  * @version 1.0
  */
-@Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AdInfo {
     @Id
     private Integer adId;

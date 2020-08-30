@@ -20,6 +20,10 @@ resultType:返回值类型
       select * from tag_info where tag_id in (select tag_id from tag_link where post_id = #{postId})
     </select>
 
+    <select id="getTagByDocId" resultType="com.ad.pojo.TagInfo">
+      select * from tag_info where tag_id in (select tag_id from tag_link where doc_id = #{docId})
+    </select>
+
 
     <insert id="addTag" parameterType="com.ad.pojo.TagInfo" useGeneratedKeys="true" keyProperty="tagId">
       insert into tag_info(tag_content)

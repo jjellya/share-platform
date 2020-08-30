@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.SearchMapper">
+
+    <select id="queryPostInfo" resultType="com.ad.pojo.PostInfo">
+      select * from post_info
+      where CONCAT(IFNULL(post_info.`post_title`,''),IFNULL(post_info.`post_content`,'')) LIKE '%' #{keyword} '%'
+      or user_id in (select user_id from user_info where user_name like '%' #{keyword} '%')
+      or post_id in (select post_id from tag_link where tag_id in (select tag_id from tag_info where tag_content like '%' #{keyword} '%'))
+      order by update_time desc,post_id desc limit ${(offset-1)*size},${size}
+    </select>
+
+    <select id="queryDocInfo" resultType="com.ad.pojo.DocInfo">
+      select * from doc_info
+      where doc_name LIKE '%' #{keyword} '%'
+      or user_id in (select user_id from user_info where user_name like '%' #{keyword} '%')
+      or doc_id in (select doc_id from tag_link where tag_id in (select tag_id from tag_info where tag_content like '%' #{keyword} '%'))
+      order by download_num desc,doc_id desc limit ${(offset-1)*size},${size}
+    </select>
+
+</mapper>

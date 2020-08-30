@@ -105,6 +105,12 @@
     修改评论、文件上传中的已知bug
     修改首页controller中内容
     添加查看文件详情的Controller
+    
+    添加了搜索Controller
+    添加了搜索业务层
+    添加了搜索mapper
+    修复了更新话题，评论数无法更新问题
+    添加了点击详情与评论话题的用户行为隐性评分监测机制
 
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
