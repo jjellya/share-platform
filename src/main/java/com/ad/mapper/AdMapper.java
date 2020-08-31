@@ -71,7 +71,11 @@ public interface AdMapper {
      */
     public int deleteAdById(Integer id);
 
-
-
+    /**
+     * 获取size个的Ad
+     * @param size
+     * @return
+     */
+    public List<AdInfo> getListOrderByTime(Integer size);
 
 }

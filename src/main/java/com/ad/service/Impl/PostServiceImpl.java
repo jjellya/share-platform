@@ -198,4 +198,14 @@ public class PostServiceImpl implements PostService {
         }
         return postDTOList;
     }
+
+    @Override
+    public int countPost() {
+        return postMapper.getPostNum();
+    }
+
+    @Override
+    public int countMyPost(int userId) {
+        return postMapper.getMyPostNum(userId);
+    }
 }

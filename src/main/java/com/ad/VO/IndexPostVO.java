@@ -12,9 +12,9 @@ import java.util.List;
  */
 @Data
 public class IndexPostVO {
+    @JsonProperty("total")
+    private int total;
+
     @JsonProperty("postDTO")
     private List<PostDTO>postDTOS;
-
-    @JsonProperty("postNumInGroup")
-    private int postNumInGroup;
 }

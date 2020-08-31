@@ -125,4 +125,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             return deleteNum;
         }
     }
+
+    @Override
+    public List<AdInfo> findAdListOrderByTime(int size) {
+        List<AdInfo> adInfos = null;
+        try {
+            adInfos = adMapper.getListOrderByTime(size);
+        }catch (Exception e){
+            log.error("获取广告信息列表失败!"+e.getMessage());
+        }finally {
+            return adInfos;
+        }
+    }
 }

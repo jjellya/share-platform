@@ -40,4 +40,9 @@ resultType:返回值类型
     <delete id="deleteAdById" >
     delete from ad_info where ad_id=#{id}
     </delete>
+
+    <select id="getListOrderByTime" parameterType="Integer" resultType="com.ad.pojo.AdInfo">
+      select * from ad_info order by ad_id desc limit #{size}
+    </select>
+
 </mapper>

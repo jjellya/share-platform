@@ -96,4 +96,17 @@ public interface PostMapper {
      */
     public List<PostInfo> getPageOrderByAuthor(Integer offset,Integer size,Integer userId);
 
+    /**
+     * 相关post的数量
+     * @return
+     */
+    public Integer getPostNum();
+
+    /**
+     * 相关我的post的数量
+     * @param userId
+     * @return
+     */
+    public Integer getMyPostNum(Integer userId);
+
 }

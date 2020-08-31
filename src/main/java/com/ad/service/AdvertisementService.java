@@ -23,6 +23,8 @@ public interface AdvertisementService {
 
     List<AdInfo> findByContact(String contact);
 
+    List<AdInfo> findAdListOrderByTime(int size);
+
     int update(AdInfo adInfo);
 
     int deleteById(int id);

@@ -34,4 +34,8 @@ public interface PostService {
     List<PostDTO> findListOrderByTimeAndGrade(int offset,int size,int grade);
 
     List<PostDTO> findListOrderByAuthor(int offset,int size,int userId);
+
+    int countPost();
+
+    int countMyPost(int userId);
 }

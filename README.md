@@ -117,6 +117,8 @@
     
     添加了advertisement的mapper
     添加了广告轮播图的业务层
+    完善了首页controller的广告业务
+    修复了首页controller的话题业务
     
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 

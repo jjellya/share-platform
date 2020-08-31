@@ -77,4 +77,11 @@ class AdvertisementServiceImplTest {
         int result = advertisementService.deleteById(2);
         Assert.assertNotEquals(0,result);
     }
+
+    @Test
+    void findAdListOrderByTime() {
+        List<AdInfo> result = advertisementService.findAdListOrderByTime(5);
+        System.out.println(result);
+        Assert.assertNotEquals(0,result.size());
+    }
 }

@@ -47,6 +47,10 @@ public class CommunityController {
             String sessionId = request.getHeader("Cookie").split("=")[1];
             UserInfo user = (UserInfo) MySessionContext.getSession(sessionId).getAttribute("userInfo");
 
+            CommunityVO communityVO = new CommunityVO();
+            //TODO fix it
+            communityVO.setTotal(postService.countPost());
+
             List<PostDTO> postDTOList = null;
             //TODO if (grade = xxx) if(classification = xxx)
             if(classification== ClassificationEnum.ORDER_BY_TIME.getCode()){
@@ -55,6 +59,7 @@ public class CommunityController {
             }else if (classification == ClassificationEnum.ORDER_BY_MY.getCode()){
                 //"我的"栏目社区
                 postDTOList = postService.findListOrderByAuthor(groupNum,groupSize,user.getUserId());
+                communityVO.setTotal(postService.countMyPost(user.getUserId()));
             }else if (classification == ClassificationEnum.ORDER_BY_SYS.getCode()){
                 // "推荐"栏目社区
                 postDTOList = recommendService.findListOrderByRecommend(groupNum,groupSize,user.getUserId(),grade);
@@ -67,13 +72,11 @@ public class CommunityController {
                 return ResultVOUtil.errorMsg("该栏目下话题数据为空,获取社区信息失败");
             }
 
-            CommunityVO communityVO = new CommunityVO();
-            communityVO.setTotal(postDTOList.size());
             communityVO.setPostDTOList(postDTOList);
             return ResultVOUtil.success(communityVO);
 
         }catch (Exception e){
-            log.error("获取Cookie中的JSESSIONID失败或获取session中的用户信息失败！");
+            log.error("获取Cookie中的JSESSIONID失败或获取session中的用户信息失败！"+e.getMessage());
             return ResultVOUtil.errorMsg("通过sessionID获取用户信息失败");
         }
     }
