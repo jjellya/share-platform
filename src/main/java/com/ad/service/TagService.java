@@ -1,5 +1,6 @@
 package com.ad.service;
 
+import com.ad.dto.TagDTO;
 import com.ad.pojo.TagInfo;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface TagService {
     TagInfo findOneById(Integer id);
 
     List<TagInfo> findByContent(String content);
+
+    List<TagDTO> findListBySubject();
 
     int update(TagInfo tag);
 

@@ -3,8 +3,10 @@ package com.ad.controller;
 import com.ad.VO.AdvertisementVO;
 import com.ad.VO.IndexPostVO;
 import com.ad.VO.ResultVO;
+import com.ad.VO.SubjectTagVO;
 import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.PostDTO;
+import com.ad.dto.TagDTO;
 import com.ad.pojo.*;
 import com.ad.service.Impl.*;
 import com.ad.utils.ResultVOUtil;
@@ -72,11 +74,12 @@ public class IndexController {
     @RequestMapping(value = "/index/recommend",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO recommend(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
-                              @RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
-                              @RequestParam(value = "index",required = false,defaultValue = "1")int index,
-                              @RequestParam(value = "size",required = false,defaultValue = "0")int size){
-        List<PostDTO> postDTOList = recommendService.findListOrderByRecommend(index,size,userId,grade);
-        return ResultVOUtil.build(200,"success",postDTOList);
+                              @RequestParam(value = "grade",required = false,defaultValue = "1")int grade){
+        List<TagDTO> tagDTOList = tagService.findListBySubject();
+        SubjectTagVO subjectTagVO =  new SubjectTagVO();
+        subjectTagVO.setTotal(tagDTOList.size());
+        subjectTagVO.setTagDTOList(tagDTOList);
+        return ResultVOUtil.success(subjectTagVO);
     }
 
     @RequestMapping(value = "/index/advertisement",method = RequestMethod.GET)

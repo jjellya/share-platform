@@ -1,5 +1,7 @@
 package com.ad.service.Impl;
 
+import com.ad.converter.TagInfo2TagDTOConverter;
+import com.ad.dto.TagDTO;
 import com.ad.mapper.TagMapper;
 import com.ad.pojo.TagInfo;
 import com.ad.service.TagService;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,5 +77,20 @@ public class TagServiceImpl implements TagService {
         }finally {
             return deleteNum;
         }
+    }
+
+    @Override
+    public List<TagDTO> findListBySubject() {
+        List<TagDTO> tagDTOList  = new ArrayList<>();
+        try {
+            List<TagInfo> tagInfos = tagMapper.getTagByContent("+");
+            for (TagInfo tagInfo : tagInfos) {
+                tagDTOList.add(TagInfo2TagDTOConverter.convert(tagInfo));
+            }
+        }catch (Exception e){
+            log.error("数据库数据读取异常");
+        }
+
+        return tagDTOList;
     }
 }

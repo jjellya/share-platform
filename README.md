@@ -119,6 +119,7 @@
     添加了广告轮播图的业务层
     完善了首页controller的广告业务
     修复了首页controller的话题业务
+    修复了首页controller的科目获取
     添加了获取悬赏贴的业务方法
     完善“我的”界面controller
     修改已知bug
