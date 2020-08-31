@@ -37,10 +37,8 @@ public class SearchController {
 
         try {
             List<DocShowDTO> docShowDTOList = searchService.searchDoc(keyword, index, size);
-            System.out.println(docShowDTOList.toString());
 
             List<PostDTO> postDTOList = searchService.searchPost(keyword, index, size-docShowDTOList.size());
-            System.out.println(postDTOList.toString());
 
             if (docShowDTOList.isEmpty()&&postDTOList.isEmpty()){
                 log.error("有关"+keyword+"的内容为空");

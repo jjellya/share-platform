@@ -113,6 +113,11 @@
     添加了点击详情与评论话题的用户行为隐性评分监测机制
 
 
+2020-8-31更新:
+    
+    添加了advertisement的mapper
+    添加了广告轮播图的业务层
+    
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
 易班轻应用开发-AD镁铝硅磷小组

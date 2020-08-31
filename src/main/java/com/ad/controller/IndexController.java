@@ -58,7 +58,7 @@ public class IndexController {
         //用来确定返回帖子的数量
         int n=0;
         if (tagInfoList.size()==0)
-            return ResultVOUtil.build(200,"wuccess","无相关话题");
+            return ResultVOUtil.build(200,"success","无相关话题");
         List<TagLink> tagLinkList = new ArrayList<>();
         PostDTO postDTO = null;
         PostInfo postInfo = null;
