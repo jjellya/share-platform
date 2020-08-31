@@ -89,6 +89,7 @@ public class PostServiceImpl implements PostService {
         try {
             post.setUpdateTime(new Date());
             updateNum = postMapper.updatePost(post);
+            //System.out.println(post);
         }catch (Exception e){
             log.error("用户: Id="+post.getUserId()+"的"+"postId = "+post.getPostId()+"的帖子更新失败!");
         }finally {

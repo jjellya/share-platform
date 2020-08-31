@@ -1,6 +1,7 @@
 package com.ad.converter;
 
 import com.ad.dto.PostDTO;
+import com.ad.pojo.LinkInfo;
 import com.ad.pojo.PostInfo;
 import com.ad.pojo.TagInfo;
 import com.ad.pojo.UserInfo;

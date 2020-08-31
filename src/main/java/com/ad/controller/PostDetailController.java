@@ -2,7 +2,9 @@ package com.ad.controller;
 
 import com.ad.VO.PostDetailsVO;
 import com.ad.VO.ResultVO;
+import com.ad.converter.CommentInfo2CommentDTOConverter;
 import com.ad.converter.PostInfo2PostDTOConverter;
+import com.ad.dto.CommentDTO;
 import com.ad.dto.PostDTO;
 import com.ad.pojo.*;
 import com.ad.service.Impl.*;
@@ -66,10 +68,17 @@ public class PostDetailController {
         postDTO= PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
 
         List<CommentInfo>commentInfoList = commentService.findByPostId(postId);
-
+        List<CommentDTO>commentDTOList = new ArrayList<>();
+        CommentDTO commentDTO = null;
+        UserInfo userInfo1 = null;
+        for (int i=0;i<commentInfoList.size();i++){
+            userInfo1 = userService.findOneById(commentInfoList.get(i).getUserId());
+            commentDTO = CommentInfo2CommentDTOConverter.convert(userInfo1,commentInfoList.get(i));
+            commentDTOList.add(commentDTO);
+        }
         PostDetailsVO postDetailsVO = new PostDetailsVO();
         postDetailsVO.setPostDTO(postDTO);
-        postDetailsVO.setList(commentInfoList);
+        postDetailsVO.setCommentDTOList(commentDTOList);
 
         return ResultVOUtil.build(200,"success",postDetailsVO);
     }

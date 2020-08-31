@@ -1,5 +1,6 @@
 package com.ad.VO;
 
+import com.ad.dto.CommentDTO;
 import com.ad.dto.PostDTO;
 import com.ad.pojo.CommentInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,6 +20,6 @@ public class PostDetailsVO {
     private PostDTO postDTO;
 
     @JsonProperty("commentList")
-    private List<CommentInfo> list;
+    private List<CommentDTO> commentDTOList;
 
 }

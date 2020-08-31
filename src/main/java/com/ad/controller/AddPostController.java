@@ -182,8 +182,9 @@ public class AddPostController {
 
         TagInfo tagInfoGrade = tagService.addTag(gradeStr);
         tagLinkService.addTagLinkToPost(tagInfoGrade.getTagId(),postInfo.getPostId());
-
-        return ResultVOUtil.build(200,"success",postInfo);
+        Map<String,Integer>map = new HashMap<>();
+        map.put("postId",postInfo.getPostId());
+        return ResultVOUtil.build(200,"success",map);
     }
 
 

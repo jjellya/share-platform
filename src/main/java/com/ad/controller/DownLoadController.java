@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WENZHIKUN
@@ -68,38 +70,21 @@ public class DownLoadController {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         // 设置URL过期时间为10年
-        System.out.println(new Date().getTime());
+        //System.out.println(new Date().getTime());
         Date expiration = new Date(new Date().getTime()+60*1000);
-        System.out.println(expiration);
+        //System.out.println(expiration);
         // 生成URL
         URL url = ossClient.generatePresignedUrl(bucketName, key , expiration);
         System.out.println("url : "+url);
 
-//        // 下载OSS文件到本地文件。如果指定的本地文件存在会覆盖，不存在则新建。
-//        ossClient.getObject(new GetObjectRequest(bucketName, objectName), new File("D:\\下载\\"+objectName));
-//        System.out.println("DownLoad Success !");
-
-//        // ossObject包含文件所在的存储空间名称、文件名称、文件元信息以及一个输入流。
-//        OSSObject ossObject = ossClient.getObject(bucketName, objectName);
-//
-//        // 读取文件内容。
-//        System.out.println("Object content:");
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(ossObject.getObjectContent()));
-//        while (true) {
-//            String line = reader.readLine();
-//            if (line == null) break;
-//
-//            System.out.println("\n" + line);
-//        }
-//        // 数据读取完成后，获取的流必须关闭，否则会造成连接泄漏，导致请求无连接可用，程序无法正常工作。
-//        reader.close();
-        // 关闭OSSClient。
         ossClient.shutdown();
 
         docInfo.setDownloadNum(docInfo.getDownloadNum()+1);
         docService.update(docInfo);
         log.info("ID为 "+userId + "的用户，于"+new Date() +
                 "对文件" +docInfo.getDocPath()+ docInfo.getDocName() + "进行下载链接的获取,链接有效时间为3分钟。");
-        return ResultVOUtil.build(200,"success",url);
+        Map<String,String>map = new HashMap<>();
+        map.put("url",url.toString());
+        return ResultVOUtil.build(200,"success",map);
     }
 }

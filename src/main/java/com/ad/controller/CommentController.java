@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author WenZhikun
  * @data 2020-08-28 16:10
@@ -55,10 +58,14 @@ public class CommentController {
 
         //评论数量改变
         PostInfo postInfo = postService.findOneById(postId);
+        System.out.println(postInfo.getCommentNum());
         postInfo.setCommentNum(postInfo.getCommentNum()+1);
-        postService.update(postInfo);
-
-        return ResultVOUtil.build(200,"success",commentDTO);
+        System.out.println(postInfo.getCommentNum());
+        int i = postService.update(postInfo);
+        System.out.println(i);
+        Map<String,Object>map = new HashMap<>();
+        map.put("commentDTO",commentDTO);
+        return ResultVOUtil.build(200,"success",map);
     }
 
 }

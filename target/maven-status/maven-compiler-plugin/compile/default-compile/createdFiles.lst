@@ -32,6 +32,7 @@ com\ad\VO\UserInfoVO.class
 com\ad\service\Impl\DocServiceImpl.class
 com\ad\controller\SimulatLogin.class
 com\ad\simulateLogin\MyX509TrustManager.class
+com\ad\controller\GetResourse.class
 com\ad\pojo\TagLink.class
 com\ad\service\Impl\TagServiceImpl.class
 com\ad\service\Impl\RecommendServiceImpl.class

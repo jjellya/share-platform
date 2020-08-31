@@ -80,6 +80,7 @@ public class UploadController {
         String filePath = "adshare/" + userId + "/";
         String key = filePath + fileName +"."+ file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
         System.out.println("测试------------------>上传的文件名："+key);
+        fileName = fileName +"."+ file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
         //1.查询文件是否存在
         //---->String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
         String endpoint = aliyunConfig.getAliyunEndpoint();

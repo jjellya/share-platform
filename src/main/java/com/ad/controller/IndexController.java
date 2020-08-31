@@ -25,19 +25,19 @@ import java.util.List;
 public class IndexController {
 
     @Autowired
-    PostServiceImpl postService;
+    private PostServiceImpl postService;
 
     @Autowired
-    TagServiceImpl tagService;
+    private TagServiceImpl tagService;
 
     @Autowired
-    TagLinkServiceImpl tagLinkService;
+    private TagLinkServiceImpl tagLinkService;
 
     @Autowired
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    RecommendServiceImpl recommendService;
+    private RecommendServiceImpl recommendService;
 
     /*首页显示的帖子*/
     @RequestMapping("/index/getposts")

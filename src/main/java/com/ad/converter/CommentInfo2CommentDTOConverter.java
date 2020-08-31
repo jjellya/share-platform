@@ -1,7 +1,9 @@
 package com.ad.converter;
 
 import com.ad.dto.CommentDTO;
+import com.ad.dto.DocDTO;
 import com.ad.pojo.CommentInfo;
+import com.ad.pojo.DocInfo;
 import com.ad.pojo.PostInfo;
 import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.UserServiceImpl;
@@ -9,6 +11,9 @@ import com.ad.service.UserService;
 import com.ad.utils.MyDateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author WenZhikun
@@ -27,6 +32,7 @@ public class CommentInfo2CommentDTOConverter {
         commentDTO.setUserId(commentInfo.getUserId());
         commentDTO.setUsername(userInfo.getUserName());
         commentDTO.setCommentTime(MyDateUtil.convertTimeToFormat(commentInfo.getCommentTime().getTime()));
-        return null;
+        return commentDTO;
     }
+
 }

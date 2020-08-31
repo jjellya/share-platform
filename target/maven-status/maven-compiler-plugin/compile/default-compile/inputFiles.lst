@@ -4,6 +4,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\SimulatLogin.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\CommunityController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\exception\UserException.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\DocDetails.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\utils\HttpClientUtil.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\enums\ResultEnum.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\AddPostController.java
@@ -25,6 +26,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\UserInfo
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\UploadController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\RecommendService.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\TagLinkService.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\IndexController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\YiBanConstent.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\UserInfoVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\LinkServiceImpl.java
@@ -35,6 +37,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\enums\Classif
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\MyHostnameVerifier.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\DocMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\UserScore.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\AdvertisementVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\ResultVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\PostServiceImpl.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\SubjectController.java
@@ -52,10 +55,13 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\TagLin
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\IEncryptNoKey.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\LinkInfo.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\PostDetailsVO.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\GetResourse.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\tools\FileMimeType.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\DocDetailsVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\UserScoreMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\PostDetailController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\simulateLogin\io\FileUtils.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\IndexPostVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\DownLoadController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\PostMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\DocService.java
@@ -66,6 +72,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\enums\DocType
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\enums\ScoreEnum.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\UserController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\TagServiceImpl.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\dto\CommentDTO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\UserEmailController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\UserService.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\config\DruidConfig.java
@@ -79,6 +86,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\CommentI
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\converter\PostInfo2PostDTOConverter.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\UserMapper.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\DocInfo.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\converter\CommentInfo2CommentDTOConverter.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\UserServiceImpl.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\enums\CommentTypeEnum.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\utils\MyDateUtil.java

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author WenZhikun
@@ -37,7 +39,9 @@ public class GetResourse {
     @ResponseBody
     public ResultVO getres(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId){
         List<DocInfo>docInfoList = docService.findByUserId(userId);
-        return ResultVOUtil.build(200,"success",docInfoList);
+        Map<String,Object>map = new HashMap<>();
+        map.put("docInfoList",docInfoList);
+        return ResultVOUtil.build(200,"success",map);
     }
 
     @RequestMapping("/api/userdoclinkpost")
@@ -47,6 +51,8 @@ public class GetResourse {
                             @RequestParam(value = "content",required = false,defaultValue = "")String content){
         DocInfo docInfo = docService.findOneById(docId);
         CommentInfo commentInfo = commentService.addComment(postId,docInfo.getUserId(),docId,1,content);
-        return ResultVOUtil.build(200,"success",commentInfo.getCommentId());
+        Map<String,Integer>map = new HashMap<>();
+        map.put("commentId",commentInfo.getCommentId());
+        return ResultVOUtil.build(200,"success",map);
     }
 }

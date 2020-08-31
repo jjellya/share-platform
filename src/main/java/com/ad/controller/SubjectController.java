@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author WenZhikun
@@ -88,7 +85,9 @@ public class SubjectController {
         if (docInfoList.size()==0){
             return ResultVOUtil.build(200,"success","not found");
         }
-        return ResultVOUtil.build(200,"success",docInfoList);
+        Map<String,Object>map = new HashMap<>();
+        map.put("docInfoList",docInfoList);
+        return ResultVOUtil.build(200,"success",map);
     }
 
 }

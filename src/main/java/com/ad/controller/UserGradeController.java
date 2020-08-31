@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WENZHIKUN
@@ -46,7 +48,8 @@ public class UserGradeController {
         userService.update(user);
         ResultVO resultVO = new ResultVO(200,"修改成功",user);
         System.out.println("后台数据 : " + resultVO.toString());
-
-        return ResultVOUtil.build(200,"修改成功",user);
+        Map<String,UserInfo>map = new HashMap<>();
+        map.put("userInfo",user);
+        return ResultVOUtil.build(200,"修改成功",map);
     }
 }
