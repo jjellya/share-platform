@@ -88,6 +88,15 @@ public interface PostMapper {
     public List<PostInfo> getPageOrderByTimeAndGrade(Integer offset,Integer size,String content);
 
     /**
+     * 展示没有资源的post
+     * @param offset
+     * @param size
+     * @param content
+     * @return
+     */
+    public List<PostInfo> getPageOrderByGradeWithoutDoc(Integer offset,Integer size,String content);
+
+    /**
      * 作者展示post
      * @param offset
      * @param size

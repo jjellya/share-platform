@@ -172,6 +172,42 @@ public class PostServiceImpl implements PostService {
         return postDTOList;
     }
 
+    @Override
+    public List<PostDTO> findListOrderByGradeWithOutDoc(int offset, int size, int grade) {
+        List<PostDTO> postDTOList = new ArrayList<>();
+
+        if(size == 0){
+            log.error("请求错误,size = 0");
+            return postDTOList;
+        }
+
+        UserInfo tempUser;
+        List<TagInfo> tempTagList;
+
+        List<PostInfo> postList = null;
+        if (grade==1){
+            postList =postMapper.getPageOrderByGradeWithoutDoc(offset,size,"大一");
+        }else if (grade==2){
+            postList =postMapper.getPageOrderByGradeWithoutDoc(offset,size,"大二");
+        }else if (grade==3){
+            postList =postMapper.getPageOrderByGradeWithoutDoc(offset,size,"大三");
+        }else if (grade==4){
+            postList =postMapper.getPageOrderByGradeWithoutDoc(offset,size,"大四");
+        }else {
+            postList =postList=postMapper.getPageOrderByTime(offset,size);
+        }
+
+        if(postList!=null&&postList.size()>0) {
+            for (PostInfo post : postList
+            ) {
+                tempUser = userMapper.getUserById(post.getUserId());
+                tempTagList = tagMapper.getTagByPostId(post.getPostId());
+                postDTOList.add(PostInfo2PostDTOConverter.convert(post,tempUser,tempTagList));
+            }
+        }
+
+        return postDTOList;
+    }
 
     @Override
     public List<PostDTO> findListOrderByAuthor(int offset, int size, int userId) {
