@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:名称空间
+id：唯一标识
+resultType:返回值类型
+#{id}:从传递过来的参数取出id值-->
+<mapper namespace="com.ad.mapper.AdMapper">
+    <select id="getAdById" resultType="com.ad.pojo.AdInfo">
+      select * from ad_info where ad_id = #{id}
+    </select>
+
+    <select id="getAdByTitle" resultType="com.ad.pojo.AdInfo">
+      select * from ad_info where ad_title  like '%' #{title} '%'
+    </select>
+
+    <select id="getContactByUserId" resultType="java.lang.String">
+      select ad_contact from ad_info where user_id =  #{userId}
+    </select>
+
+    <select id="getAdByUserId" resultType="com.ad.pojo.AdInfo">
+      select * from ad_info where user_id =  #{userId}
+    </select>
+
+    <select id="getAdByContact" resultType="com.ad.pojo.AdInfo">
+      select * from ad_info where ad_contact  like '%' #{contact} '%'
+    </select>
+
+    <insert id="addAd" parameterType="com.ad.pojo.AdInfo" useGeneratedKeys="true" keyProperty="adId">
+      insert into ad_info(ad_title,ad_pic,user_id,ad_contact)
+      values (#{adTitle},#{adPic},#{userId},#{adContact})
+    </insert>
+
+    <update id="updateAd" parameterType="com.ad.pojo.AdInfo">
+     update ad_info set ad_title=#{adTitle},ad_pic=#{adPic},user_id=#{userId},ad_contact=#{adContact}
+        where ad_id = #{adId}
+    </update>
+
+    <delete id="deleteAdById" >
+    delete from ad_info where ad_id=#{id}
+    </delete>
+
+    <select id="getListOrderByTime" parameterType="Integer" resultType="com.ad.pojo.AdInfo">
+      select * from ad_info order by ad_id desc limit #{size}
+    </select>
+
+</mapper>

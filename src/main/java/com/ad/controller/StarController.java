@@ -5,6 +5,7 @@ import com.ad.pojo.DocInfo;
 import com.ad.pojo.LinkInfo;
 import com.ad.service.Impl.DocServiceImpl;
 import com.ad.service.Impl.LinkServiceImpl;
+import com.ad.service.Impl.RecommendServiceImpl;
 import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;

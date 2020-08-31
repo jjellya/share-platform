@@ -30,4 +30,25 @@ class PostServiceImplTest {
         System.out.println(result);
         Assert.assertNotEquals(0,result.size());
     }
+
+    @Test
+    void countPost() {
+        int result = postService.countPost();
+        System.out.println(result);
+        Assert.assertNotEquals(0,result);
+    }
+
+    @Test
+    void countMyPost() {
+        int result = postService.countMyPost(6);
+        System.out.println(result);
+        Assert.assertNotEquals(0,result);
+    }
+
+    @Test
+    void findListOrderByGradeWithOutDoc() {
+        List<PostDTO> result = postService.findListOrderByGradeWithOutDoc(1,10,1);
+        System.out.println(result);
+        Assert.assertNotEquals(0,result.size());
+    }
 }

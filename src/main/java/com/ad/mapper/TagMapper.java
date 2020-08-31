@@ -32,11 +32,18 @@ public interface TagMapper {
 
 
     /**
-     * 通过ID查找tag
+     * 通过postID查找tag
      * @param postId
      * @return
      */
     public List<TagInfo> getTagByPostId(Integer postId);
+
+    /**
+     * 通过docID查找tag
+     * @param docId
+     * @return
+     */
+    public List<TagInfo> getTagByDocId(Integer docId);
 
     /**
      * 添加Tag
