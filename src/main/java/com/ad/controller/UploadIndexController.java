@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,7 +30,7 @@ public class UploadIndexController {
      * 上传界面的显示
      * @return
      */
-    @RequestMapping("/uploadindex")
+    @RequestMapping(value = "/uploadindex",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO uploadindex(@RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
                                 @RequestParam(value = "offset",required = false,defaultValue = "1")int offset,

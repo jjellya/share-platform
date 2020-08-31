@@ -29,7 +29,7 @@ public class UserEmailController {
     UserServiceImpl userService;
 
     @ResponseBody
-    @RequestMapping(value = "/api/user/mail",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/mail",method = RequestMethod.GET)
     public ResultVO userGrade(@RequestParam(value = "userId",required = false)int userId,
                               @RequestParam(value = "mail",required = false)String mail){
         //System.out.println(userId);

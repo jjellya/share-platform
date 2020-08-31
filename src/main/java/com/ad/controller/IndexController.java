@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,7 +46,7 @@ public class IndexController {
     private AdvertisementServiceImpl advertisementService;
 
     /*首页显示的帖子*/
-    @RequestMapping("/index/getposts")
+    @RequestMapping(value = "/index/getposts",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO getPost(@RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
                             @RequestParam(value = "groupNum",required = false,defaultValue = "1")int groupNum,
@@ -68,7 +69,7 @@ public class IndexController {
         }
     }
 
-    @RequestMapping("/index/recommend")
+    @RequestMapping(value = "/index/recommend",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO recommend(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                               @RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
@@ -78,7 +79,7 @@ public class IndexController {
         return ResultVOUtil.build(200,"success",postDTOList);
     }
 
-    @RequestMapping("/index/advertisement")
+    @RequestMapping(value = "/index/advertisement",method = RequestMethod.GET)
     @ResponseBody
     private ResultVO advertisement(@RequestParam(value = "size",required = false,defaultValue = "0")int size){
 

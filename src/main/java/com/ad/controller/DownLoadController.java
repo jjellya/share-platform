@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,7 +44,7 @@ public class DownLoadController {
 
     @Autowired
     private UserServiceImpl userService;
-    @RequestMapping("/download")
+    @RequestMapping(value = "/download",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO download(@RequestParam(value = "docId",required = false)int docId,
                              @RequestParam(value = "userId",required = false)int userId) throws IOException {

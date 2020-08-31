@@ -1,6 +1,7 @@
 package com.ad.VO;
 
 import com.ad.dto.CommentDTO;
+import com.ad.dto.DocDTO;
 import com.ad.pojo.CommentInfo;
 import com.ad.pojo.DocInfo;
 import com.ad.pojo.TagInfo;
@@ -16,8 +17,8 @@ import java.util.List;
 @Data
 public class DocDetailsVO {
 
-    @JsonProperty("docInfo")
-    private DocInfo docInfo;
+    @JsonProperty("docDTO")
+    private DocDTO docDTO;
 
     @JsonProperty("tagInfoList")
     private List<TagInfo> tagInfoList;

@@ -3,13 +3,16 @@ package com.ad.controller;
 import com.ad.VO.DocDetailsVO;
 import com.ad.VO.ResultVO;
 import com.ad.converter.CommentInfo2CommentDTOConverter;
+import com.ad.converter.DocInfo2DocDTOConvert;
 import com.ad.dto.CommentDTO;
+import com.ad.dto.DocDTO;
 import com.ad.pojo.*;
 import com.ad.service.Impl.*;
 import com.ad.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,14 +42,15 @@ public class DocDetails {
     @Autowired
     private UserServiceImpl userService;
 
-    @RequestMapping("/api/docdetails")
+    @RequestMapping(value = "/api/docdetails",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO docdetails(@RequestParam(value = "docId",required = false,defaultValue = "1")int docId){
 
         DocInfo docInfo = docService.findOneById(docId);
         UserInfo userInfo = userService.findOneById(docInfo.getUserId());
+        DocDTO docDTO = DocInfo2DocDTOConvert.covert(docInfo,userInfo);
         DocDetailsVO docDetailsVO = new DocDetailsVO();
-        docDetailsVO.setDocInfo(docInfo);
+        docDetailsVO.setDocDTO(docDTO);
         List<TagInfo>tagInfoList = new ArrayList<>();
         List<TagLink> tagLinkList = tagLinkService.findByDocId(docId);
         for (int i=0;i<tagLinkList.size();i++){

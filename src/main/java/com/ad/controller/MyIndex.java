@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -46,7 +47,7 @@ public class MyIndex {
     @Autowired
     private TagServiceImpl tagService;
 
-    @RequestMapping("/my/resourse")
+    @RequestMapping(value = "/my/resourse",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO myresourse(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                                @RequestParam(value = "type",required = false,defaultValue = "0")int type){
@@ -65,7 +66,7 @@ public class MyIndex {
 //        }
     }
 
-    @RequestMapping("/my/star")
+    @RequestMapping(value = "/my/star",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO star(@RequestParam(value = "user",required = false,defaultValue = "1")int userId){
         try{
@@ -82,7 +83,7 @@ public class MyIndex {
         }
     }
 
-    @RequestMapping("/my/posts")
+    @RequestMapping(value = "/my/posts",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO myposts(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                             @RequestParam(value = "offset",required = false,defaultValue = "1")int offset,

@@ -35,7 +35,7 @@ public class StarController {
     @Autowired
     LinkServiceImpl linkService;
 
-    @RequestMapping(value = "/api/star",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/star",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO star(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                          @RequestParam(value = "docId",required = false,defaultValue = "0")int docId,

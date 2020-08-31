@@ -11,6 +11,7 @@ import com.ad.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,7 +36,7 @@ public class GetResourse {
     @Autowired
     private CommentServiceImpl commentService;
 
-    @RequestMapping("/api/getres")
+    @RequestMapping(value = "/api/getres",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO getres(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId){
         List<DocInfo>docInfoList = docService.findByUserId(userId);
@@ -44,7 +45,7 @@ public class GetResourse {
         return ResultVOUtil.build(200,"success",map);
     }
 
-    @RequestMapping("/api/userdoclinkpost")
+    @RequestMapping(value = "/api/userdoclinkpost",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO connect(@RequestParam(value = "postId",required = false,defaultValue = "1")int postId,
                             @RequestParam(value = "docId",required = false,defaultValue = "1")int docId,

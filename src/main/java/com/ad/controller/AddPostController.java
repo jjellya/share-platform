@@ -57,7 +57,7 @@ public class AddPostController {
     @Autowired
     private UserServiceImpl userService;
 
-    @RequestMapping(value = "/api/addpost",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/addpost",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO addPost(@RequestParam(value = "postTitle",required = false)String postTitle,
                             @RequestParam(value = "postContent",required = false)String postContent,

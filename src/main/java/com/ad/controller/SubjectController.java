@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,7 +35,7 @@ public class SubjectController {
     @Autowired
     TagLinkServiceImpl tagLinkService;
 
-    @RequestMapping("/api/subject")
+    @RequestMapping(value = "/api/subject",method = RequestMethod.GET)
     @ResponseBody
     public ResultVO subject(@RequestParam(value = "subject",required = false)String subject,
                             @RequestParam(value = "year",required = false)String year){
