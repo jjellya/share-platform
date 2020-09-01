@@ -73,8 +73,15 @@ public class CommentController {
         Map<String,Object>map = new HashMap<>();
         map.put("commentDTO",commentDTO);
         //评论则对该话题评分+2
-        recommendService.addComment(recommendService.findOneByUserIdAndPostId(userId,postId).getScoreId());
-        return ResultVOUtil.build(200,"success",map);
+        try {
+            if (recommendService.findOneByUserIdAndPostId(userId,postId)==null)
+                recommendService.addScore(userId,0,postId,0);
+            recommendService.addComment(recommendService.findOneByUserIdAndPostId(userId, postId).getScoreId());
+
+        }catch (Exception e){
+            log.error("用户评论行为检测失败");
+        }
+       return ResultVOUtil.build(200,"success",map);
     }
 
 }

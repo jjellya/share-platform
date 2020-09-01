@@ -7,6 +7,7 @@ import com.ad.config.MySessionContext;
 import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.CommentDTO;
 import com.ad.dto.PostDTO;
+import com.ad.enums.ScoreEnum;
 import com.ad.pojo.*;
 import com.ad.service.Impl.*;
 import com.ad.utils.MyDateUtil;
@@ -55,9 +56,14 @@ public class PostDetailController {
     @ResponseBody
     public ResultVO details(@RequestParam(value = "postId",required = false)int postId,
                             HttpServletRequest request){
-        String sessionId = request.getHeader("Cookie").split("=")[1];
-        UserInfo user_login = (UserInfo) MySessionContext.getSession(sessionId).getAttribute("userInfo");
 
+        String sessionId = request.getHeader("Cookie").split("=")[1];
+        UserInfo user_login = null;
+        try {
+            user_login = (UserInfo) MySessionContext.getSession(sessionId).getAttribute("userInfo");
+        }catch (Exception e){
+            log.error("用户cookie获取失败");
+        }
 
         //创建帖子信息
         PostInfo postInfo = postService.findOneById(postId);
@@ -67,15 +73,20 @@ public class PostDetailController {
 
         //通过postId获取tagLink
         List<TagLink>tagLinkList = tagLinkService.findByPostId(postId);
+        System.out.println(tagLinkList.toString());
         List<TagInfo>tagInfoList = new ArrayList<>();
-        if (tagLinkList.size()>=1)
+        if (tagLinkList!=null&&tagLinkList.size()>=1)
         for (int i=0;i<tagLinkList.size();i++){
             tagInfoList.add(tagService.findOneById(tagLinkList.get(i).getTagId()));
             System.out.println(tagInfoList.get(i).getTagId()+" : " +tagInfoList.get(i).getTagContent());
         }
 
+        try {
+            postDTO= PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
+        }catch (Exception e){
+            log.error("话题DTO转换失败");
+        }
 
-        postDTO= PostInfo2PostDTOConverter.convert(postInfo,userInfo,tagInfoList);
 
         List<CommentInfo>commentInfoList = commentService.findByPostId(postId);
         List<CommentDTO>commentDTOList = new ArrayList<>();
@@ -89,8 +100,15 @@ public class PostDetailController {
         PostDetailsVO postDetailsVO = new PostDetailsVO();
         postDetailsVO.setPostDTO(postDTO);
         postDetailsVO.setCommentDTOList(commentDTOList);
-
-        recommendService.clickAgain(recommendService.findOneByUserIdAndPostId(user_login.getUserId(),postId).getScoreId());
+        try{
+            if (recommendService.findOneByUserIdAndPostId(user_login.getUserId(),postId)==null){
+                recommendService.addScore(user_login.getUserId(),0,postId,0);
+            }else {
+                recommendService.clickAgain(recommendService.findOneByUserIdAndPostId(user_login.getUserId(),postId).getScoreId());
+            }
+        }catch (Exception e){
+            log.error("用户点击行为检测失败");
+        }
 
         return ResultVOUtil.build(200,"success",postDetailsVO);
     }
