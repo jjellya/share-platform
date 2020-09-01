@@ -47,7 +47,7 @@ public class MyIndex {
     @Autowired
     private TagServiceImpl tagService;
 
-    @RequestMapping(value = "/my/resourse",method = RequestMethod.GET)
+    @RequestMapping(value = "/my/resourse")
     @ResponseBody
     public ResultVO myresourse(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                                @RequestParam(value = "type",required = false,defaultValue = "0")int type){
@@ -66,7 +66,7 @@ public class MyIndex {
 //        }
     }
 
-    @RequestMapping(value = "/my/star",method = RequestMethod.GET)
+    @RequestMapping(value = "/my/star")
     @ResponseBody
     public ResultVO star(@RequestParam(value = "user",required = false,defaultValue = "1")int userId){
         try{
@@ -83,7 +83,7 @@ public class MyIndex {
         }
     }
 
-    @RequestMapping(value = "/my/posts",method = RequestMethod.GET)
+    @RequestMapping(value = "/my/posts")
     @ResponseBody
     public ResultVO myposts(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                             @RequestParam(value = "offset",required = false,defaultValue = "1")int offset,

@@ -1,12 +1,16 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.converter.DocInfo2DocDTOConvert;
+import com.ad.dto.DocDTO;
 import com.ad.pojo.DocInfo;
 import com.ad.pojo.TagInfo;
 import com.ad.pojo.TagLink;
+import com.ad.pojo.UserInfo;
 import com.ad.service.Impl.DocServiceImpl;
 import com.ad.service.Impl.TagLinkServiceImpl;
 import com.ad.service.Impl.TagServiceImpl;
+import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +31,18 @@ import java.util.*;
 public class SubjectController {
 
     @Autowired
-    DocServiceImpl docService;
+    private DocServiceImpl docService;
 
     @Autowired
-    TagServiceImpl tagService;
+    private TagServiceImpl tagService;
 
     @Autowired
-    TagLinkServiceImpl tagLinkService;
+    private TagLinkServiceImpl tagLinkService;
 
-    @RequestMapping(value = "/api/subject",method = RequestMethod.GET)
+    @Autowired
+    private UserServiceImpl userService;
+
+    @RequestMapping(value = "/api/subject")
     @ResponseBody
     public ResultVO subject(@RequestParam(value = "subject",required = false)String subject,
                             @RequestParam(value = "year",required = false)String year){
@@ -79,15 +86,17 @@ public class SubjectController {
                 //System.out.println(calendar.get(Calendar.YEAR));
                 if (calendar.get(Calendar.YEAR)==Integer.parseInt(year)){
                     docInfoList.add(docInfo);
-                    System.out.println("符号时间要求的文件------------>"+docInfo);
+                    System.out.println("测试数据：符合时间要求的文件------->"+docInfo);
                 }
             }
         }
         if (docInfoList.size()==0){
             return ResultVOUtil.build(200,"success","not found");
         }
+
+        List<DocDTO>docDTOList = DocInfo2DocDTOConvert.covertList(docInfoList,userService.findOneById(docInfo.getUserId()));
         Map<String,Object>map = new HashMap<>();
-        map.put("docInfoList",docInfoList);
+        map.put("docDTOList",docDTOList);
         return ResultVOUtil.build(200,"success",map);
     }
 

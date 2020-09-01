@@ -51,7 +51,7 @@ public class PostDetailController {
     @Autowired
     private RecommendServiceImpl recommendService;
 
-    @RequestMapping(value = "/api/postdetails",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/postdetails")
     @ResponseBody
     public ResultVO details(@RequestParam(value = "postId",required = false)int postId,
                             HttpServletRequest request){

@@ -44,7 +44,7 @@ public class CommentController {
     @Autowired
     private RecommendServiceImpl recommendService;
 
-    @RequestMapping(value = "/api/comment",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/comment")
     @ResponseBody
     @Transactional
     public ResultVO comment(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,

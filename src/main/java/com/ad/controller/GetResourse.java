@@ -1,12 +1,15 @@
 package com.ad.controller;
 
 import com.ad.VO.ResultVO;
+import com.ad.converter.DocInfo2DocDTOConvert;
+import com.ad.dto.DocDTO;
 import com.ad.pojo.CommentInfo;
 import com.ad.pojo.DocInfo;
 import com.ad.pojo.PostInfo;
 import com.ad.service.Impl.CommentServiceImpl;
 import com.ad.service.Impl.DocServiceImpl;
 import com.ad.service.Impl.PostServiceImpl;
+import com.ad.service.Impl.UserServiceImpl;
 import com.ad.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,16 +39,20 @@ public class GetResourse {
     @Autowired
     private CommentServiceImpl commentService;
 
-    @RequestMapping(value = "/api/getres",method = RequestMethod.GET)
+    @Autowired
+    private UserServiceImpl userService;
+
+    @RequestMapping(value = "/api/getres")
     @ResponseBody
     public ResultVO getres(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId){
         List<DocInfo>docInfoList = docService.findByUserId(userId);
         Map<String,Object>map = new HashMap<>();
-        map.put("docInfoList",docInfoList);
+        List<DocDTO>docDTOList = DocInfo2DocDTOConvert.covertList(docInfoList,userService.findOneById(userId));
+        map.put("docDTOList",docDTOList);
         return ResultVOUtil.build(200,"success",map);
     }
 
-    @RequestMapping(value = "/api/userdoclinkpost",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/userdoclinkpost")
     @ResponseBody
     public ResultVO connect(@RequestParam(value = "postId",required = false,defaultValue = "1")int postId,
                             @RequestParam(value = "docId",required = false,defaultValue = "1")int docId,

@@ -30,7 +30,7 @@ public class UploadIndexController {
      * 上传界面的显示
      * @return
      */
-    @RequestMapping(value = "/uploadindex",method = RequestMethod.GET)
+    @RequestMapping(value = "/uploadindex")
     @ResponseBody
     public ResultVO uploadindex(@RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
                                 @RequestParam(value = "offset",required = false,defaultValue = "1")int offset,

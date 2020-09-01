@@ -44,7 +44,7 @@ public class DownLoadController {
 
     @Autowired
     private UserServiceImpl userService;
-    @RequestMapping(value = "/download",method = RequestMethod.GET)
+    @RequestMapping(value = "/download")
     @ResponseBody
     public ResultVO download(@RequestParam(value = "docId",required = false)int docId,
                              @RequestParam(value = "userId",required = false)int userId) throws IOException {

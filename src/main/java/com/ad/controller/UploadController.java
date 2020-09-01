@@ -53,7 +53,7 @@ public class UploadController {
     @Autowired
     private UserServiceImpl userService;
 
-    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload")
     @ResponseBody
     public ResultVO upload(@RequestParam(value = "file",required = false)MultipartFile file,
                            @RequestParam(value = "fileName",required = false)String fileName,

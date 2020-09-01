@@ -18,6 +18,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\Up
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\AdvertisementService.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\TagLinkService.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\dto\DocDTO.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\dto\TagDTO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\LinkServiceImpl.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\PostService.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\config\MySessionContext.java
@@ -49,6 +50,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\mapper\TagMap
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\controller\CommentController.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\utils\ResultVOUtil.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\WechatUserVO.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\converter\TagInfo2TagDTOConverter.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\utils\ESconst.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\converter\PostInfo2PostDTOConverter.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\DocInfo.java
@@ -100,6 +102,7 @@ F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\SearchResu
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\pojo\ESDocument.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\config\MySessionListener.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\utils\WechatUtil.java
+F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\VO\SubjectTagVO.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\TagServiceImpl.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\config\DruidConfig.java
 F:\IDEA\ADShare\share-platform\share-platform\src\main\java\com\ad\service\Impl\AdvertisementServiceImpl.java

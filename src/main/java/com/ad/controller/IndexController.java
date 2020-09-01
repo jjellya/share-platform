@@ -4,7 +4,10 @@ import com.ad.VO.AdvertisementVO;
 import com.ad.VO.IndexPostVO;
 import com.ad.VO.ResultVO;
 import com.ad.VO.SubjectTagVO;
+import com.ad.VO.SearchResultVO;
 import com.ad.converter.PostInfo2PostDTOConverter;
+import com.ad.dto.DocDTO;
+import com.ad.dto.DocShowDTO;
 import com.ad.dto.PostDTO;
 import com.ad.dto.TagDTO;
 import com.ad.pojo.*;
@@ -47,8 +50,11 @@ public class IndexController {
     @Autowired
     private AdvertisementServiceImpl advertisementService;
 
+    @Autowired
+    private SearchServiceImpl searchService;
+
     /*首页显示的帖子*/
-    @RequestMapping(value = "/index/getposts",method = RequestMethod.GET)
+    @RequestMapping(value = "/index/getposts")
     @ResponseBody
     public ResultVO getPost(@RequestParam(value = "grade",required = false,defaultValue = "1")int grade,
                             @RequestParam(value = "groupNum",required = false,defaultValue = "1")int groupNum,
@@ -71,7 +77,7 @@ public class IndexController {
         }
     }
 
-    @RequestMapping(value = "/index/recommend",method = RequestMethod.GET)
+    @RequestMapping(value = "/index/recommend")
     @ResponseBody
     public ResultVO recommend(@RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
                               @RequestParam(value = "grade",required = false,defaultValue = "1")int grade){
@@ -104,6 +110,5 @@ public class IndexController {
 
         return ResultVOUtil.success(advertisementVO);
     }
-
 
 }

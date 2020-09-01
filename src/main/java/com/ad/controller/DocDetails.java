@@ -42,7 +42,7 @@ public class DocDetails {
     @Autowired
     private UserServiceImpl userService;
 
-    @RequestMapping(value = "/api/docdetails",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/docdetails")
     @ResponseBody
     public ResultVO docdetails(@RequestParam(value = "docId",required = false,defaultValue = "1")int docId){
 
