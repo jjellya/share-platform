@@ -47,8 +47,10 @@ class PostServiceImplTest {
 
     @Test
     void findListOrderByGradeWithOutDoc() {
-        List<PostDTO> result = postService.findListOrderByGradeWithOutDoc(1,10,1);
-        System.out.println(result);
+        List<PostDTO> result = postService.findListOrderByGradeWithOutDoc(1,10,2);
+        for (PostDTO postDTO : result) {
+            System.out.println(postDTO.getPostId()+postDTO.getTitle());
+        }
         Assert.assertNotEquals(0,result.size());
     }
 }

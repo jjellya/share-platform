@@ -195,7 +195,7 @@ public class PostServiceImpl implements PostService {
         }else if (grade==4){
             postList =postMapper.getPageOrderByGradeWithoutDoc(offset,size,"大四");
         }else {
-            postList =postList=postMapper.getPageOrderByTime(offset,size);
+            postList =postList=postMapper.getPageOrderByGradeWithoutDoc(offset,size,"");
         }
 
         if(postList!=null&&postList.size()>0) {
