@@ -6,6 +6,8 @@ import com.ad.converter.CommentInfo2CommentDTOConverter;
 import com.ad.config.MySessionContext;
 import com.ad.converter.PostInfo2PostDTOConverter;
 import com.ad.dto.CommentDTO;
+import com.ad.dto.CommentDocDTO;
+import com.ad.dto.DocDTO;
 import com.ad.dto.PostDTO;
 import com.ad.enums.ScoreEnum;
 import com.ad.pojo.*;
@@ -32,6 +34,7 @@ import java.util.List;
  */
 @Controller
 @Slf4j
+@Transactional
 public class PostDetailController {
 
     @Autowired
@@ -47,14 +50,21 @@ public class PostDetailController {
     private TagServiceImpl tagService;
 
     @Autowired
-    CommentServiceImpl commentService;
+    private CommentServiceImpl commentService;
+
+    @Autowired
+    private DocServiceImpl docService;
 
     @Autowired
     private RecommendServiceImpl recommendService;
 
+    @Autowired
+    private LinkServiceImpl linkService;
+
     @RequestMapping(value = "/api/postdetails")
     @ResponseBody
     public ResultVO details(@RequestParam(value = "postId",required = false)int postId,
+                            @RequestParam(value = "userId",required = false)int userId,
                             HttpServletRequest request){
 
         String sessionId = request.getHeader("Cookie").split("=")[1];
@@ -87,19 +97,44 @@ public class PostDetailController {
             log.error("话题DTO转换失败");
         }
 
+        //该用户的信息
+        UserInfo userInfoMe = userService.findOneById(userId);
+        //该用户的收藏队列
+        List<DocInfo>docInfoList = linkService.findDocListByUserId(userId);
 
         List<CommentInfo>commentInfoList = commentService.findByPostId(postId);
         List<CommentDTO>commentDTOList = new ArrayList<>();
+        List<CommentDocDTO>commentDocDTOS = new ArrayList<>();
         CommentDTO commentDTO = null;
+        CommentDocDTO commentDocDTO = null;
         UserInfo userInfo1 = null;
+        DocInfo docInfo = null;
+        boolean isStar = false;
         for (int i=0;i<commentInfoList.size();i++){
+            isStar = false;
             userInfo1 = userService.findOneById(commentInfoList.get(i).getUserId());
-            commentDTO = CommentInfo2CommentDTOConverter.convert(userInfo1,commentInfoList.get(i));
-            commentDTOList.add(commentDTO);
+            if (commentInfoList.get(i).getCommentType()==0) {
+                //说明这个是没有带资源的评论
+                commentDTO = CommentInfo2CommentDTOConverter.convert(userInfo1, commentInfoList.get(i));
+                commentDTOList.add(commentDTO);
+            }else {
+                //带着资源的评论
+                docInfo = docService.findOneById(commentInfoList.get(i).getDocId());
+                if (docInfoList!=null||docInfoList.size()!=0)
+                for (int j=0;j<docInfoList.size();j++){
+                    if (docInfo.getDocId()==docInfoList.get(j).getDocId()){
+                        isStar=true;
+                        break;
+                    }
+                }
+                commentDocDTO = CommentInfo2CommentDTOConverter.covertDoc(userInfo,commentInfoList.get(i),docInfo,isStar);
+                commentDocDTOS.add(commentDocDTO);
+            }
         }
         PostDetailsVO postDetailsVO = new PostDetailsVO();
         postDetailsVO.setPostDTO(postDTO);
         postDetailsVO.setCommentDTOList(commentDTOList);
+        postDetailsVO.setCommentDocDTOList(commentDocDTOS);
         try{
             if (recommendService.findOneByUserIdAndPostId(user_login.getUserId(),postId)==null){
                 recommendService.addScore(user_login.getUserId(),0,postId,0);

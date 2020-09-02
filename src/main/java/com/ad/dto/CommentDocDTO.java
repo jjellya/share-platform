@@ -4,10 +4,10 @@ import lombok.Data;
 
 /**
  * @author WenZhikun
- * @data 2020-08-29 10:51
+ * @data 2020-09-02 15:15
  */
 @Data
-public class CommentDTO {
+public class CommentDocDTO {
     /*评论内容*/
     private String content;
 
@@ -35,5 +35,18 @@ public class CommentDTO {
     /*文件Id，没有文件默认为0*/
     private int docId;
 
+    /*资源名称*/
+    private String docName;
 
+    /*资源类型*/
+    private int docType;
+
+    /*是否收藏*/
+    private boolean isStar;
+
+    /*star数量*/
+    private int starNum;
+
+    /*下载次数*/
+    private int downloadNum;
 }

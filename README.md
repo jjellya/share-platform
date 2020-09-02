@@ -125,10 +125,11 @@
     修改已知bug
 
 2020-9-2更新：
-    
+
     添加获取所有科目的Controller
     解决标签复用问题
-    
+    对帖子详情进行完善和修改
+
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
