@@ -25,6 +25,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,7 @@ import java.util.*;
  */
 @Controller
 @Slf4j
+@Transactional
 public class AddPostController {
 
     //创建帖子
@@ -62,30 +64,36 @@ public class AddPostController {
     public ResultVO addPost(@RequestParam(value = "postTitle",required = false)String postTitle,
                             @RequestParam(value = "postContent",required = false)String postContent,
                             @RequestParam(value = "userId",required = false,defaultValue = "1")int userId,
-                            @RequestParam(value = "postTag",required = false)List<String> postTag,
+                            @RequestParam(value = "postTag",required = false)String postTag,
                             @RequestParam(value = "file",required = false) MultipartFile[] pictures) throws IOException {
         //判断是否接受到文件
-        if (pictures==null){
+        if (pictures == null) {
             System.out.println("the file is null !");
-        }else if (pictures.length>1){
+        } else if (pictures.length > 1) {
             //文件限制一个
-            return ResultVOUtil.build(501,"error","文件数量多");
+            return ResultVOUtil.build(501, "error", "文件数量多");
         }
         //System.out.println(postContent);
-        if (postContent.length()>255){
+        if (postContent.length() > 255) {
             //内容限制字数255个字
-            return ResultVOUtil.build(501,"error","内容字数超标");
-        }else if (postContent.length()==0){
+            return ResultVOUtil.build(501, "error", "内容字数超标");
+        } else if (postContent.length() == 0) {
             return ResultVOUtil.errorMsg("内容不能为空");
         }
-        if(postTitle.length()>20){
-            //标题限制字数20个字
-            return ResultVOUtil.build(501,"error","题目长度超标");
-        }else if (postTitle.length()==0){
-            return ResultVOUtil.errorMsg("标题不能为空");
-        }
 
-        if (pictures!=null){
+        //判断是否有标签传过来
+        if (postTag == null) {
+            return ResultVOUtil.errorMsg("标签不能为空");
+        }
+        //如果标签不为空就对标签进行逐个判断
+        String[] postTagList = postTag.split("\\+");
+        //System.out.println(postTagList.toString());
+        for (int i=0;i< postTagList.length;i++){
+            if (postTagList[i].length()>8){
+                return ResultVOUtil.errorMsg("标签过长，限定为八个字符");
+            }
+        }
+        if (pictures!=null&&pictures.length!=0){
             MultipartFile picture = pictures[0];
             //图片的url
             String pUrl = null;
@@ -145,24 +153,35 @@ public class AddPostController {
                 e.printStackTrace();
             }
             if(pUrl!=null){
-                System.out.println("pUrl : "+pUrl);
+                //System.out.println("pUrl : "+pUrl);
                 //将图片url加在内容后面
+                log.info("ImageUrl is " + pUrl);
                 postContent = postContent + "+" + pUrl;
             }
         }
 
         //创建帖子
-        PostDTO postDTO = new PostDTO();
         PostInfo postInfo = postService.addPost(postTitle,postContent,userId);
+        //创建帖子的时候设置评论的数量为零
         postInfo.setCommentNum(0);
         postService.update(postInfo);
+
         //创建标签列表
-        //List<TagInfo>tagInfoList = new ArrayList<>();
-        //为每个标签内容创建帖子
-        for (int i=0;i<postTag.size();i++){
-            TagInfo tagInfo = tagService.addTag(postTag.get(i));
-            //创建标签和帖子链接
-            tagLinkService.addTagLinkToPost(tagInfo.getTagId(),postInfo.getPostId());
+        //先判断标签内容在数据库中是否存在，存在则不创建，不存在则创建
+        for (int i=0;i< postTagList.length;i++){
+            //System.out.println(postTagList[i]);
+            List<TagInfo>tagInfoList = tagService.findByContent(postTagList[i]);
+            //如果该标签不存在，则进行创建
+            if (tagInfoList==null||tagInfoList.size()==0){
+                //创建标签
+                TagInfo tagInfo = tagService.addTag(postTagList[i]);
+                //创建帖子与post的关联连接
+                tagLinkService.addTagLinkToPost(tagInfo.getTagId(),postInfo.getPostId());
+            }else{
+                //如果标签存在则进行复用
+                //直接对标签列表中的第一个标签进行复用
+                tagLinkService.addTagLinkToPost(tagInfoList.get(0).getTagId(),postInfo.getPostId());
+            }
         }
 
         //修改用户帖子信息
@@ -171,7 +190,6 @@ public class AddPostController {
         userService.update(userInfo);
         log.info("用户: Id="+userInfo.getUserId()+",name = "+userInfo.getUserName()+"于 "+new Date()+
                 " 帖子数加一，帖子数量变更为 "+ userInfo.getPostNum());
-        System.out.println(userInfo.getPostNum());
 
         //进用户的年级添加到帖子标签中
         String gradeStr;
@@ -179,9 +197,18 @@ public class AddPostController {
         else if (userInfo.getUserGrade()==2) gradeStr="大二";
         else if (userInfo.getUserGrade()==3) gradeStr="大三";
         else gradeStr="大四";
+        //将年级标签贴上
+        List<TagInfo>list = tagService.findByContent(gradeStr);
+        //如果年级标签不存在就创建
+        if (list==null){
+            //年级标签不存在，创建一个
+            TagInfo tagInfo = tagService.addTag(gradeStr);
+            tagLinkService.addTagLinkToPost(tagInfo.getTagId(),postInfo.getPostId());
+        }else{
+            //标签存在，则直接使用标签列表中找到的第一个
+            tagLinkService.addTagLinkToPost(list.get(0).getTagId(),postInfo.getPostId());
+        }
 
-        TagInfo tagInfoGrade = tagService.addTag(gradeStr);
-        tagLinkService.addTagLinkToPost(tagInfoGrade.getTagId(),postInfo.getPostId());
         Map<String,Integer>map = new HashMap<>();
         map.put("postId",postInfo.getPostId());
         return ResultVOUtil.build(200,"success",map);

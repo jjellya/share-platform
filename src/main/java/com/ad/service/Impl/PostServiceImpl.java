@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
         post.setPostTitle(postTitle);
         post.setPostContent(postContent);
         post.setUserId(userId);
-
+        post.setCommentNum(0);
         post.setCreateTime(new Date());
         post.setUpdateTime(post.getCreateTime());
 

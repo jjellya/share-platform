@@ -22,6 +22,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -108,13 +109,18 @@ public class UploadController {
         // 关闭OSSClient。
         ossClient.shutdown();
 
+        //创建文件
         DocInfo docInfo = docService.addDoc(fileName,fileType,(int)file.getSize(),filePath,userId);
-        TagInfo tagInfoSubject = tagService.addTag(subject);
-        TagInfo tagInfoGrade = tagService.addTag(fileGrade);
-        //创建标签和文件的关联
-        tagLinkService.addTagLinkToDoc(tagInfoSubject.getTagId(),docInfo.getDocId());
-        tagLinkService.addTagLinkToDoc(tagInfoGrade.getTagId(),docInfo.getDocId());
+
+        //判断标签存在与否，决定复用与否
+        List<TagInfo>tagInfoListSubject = tagService.findByContent(subject);
+        List<TagInfo>tagInfoListGrade = tagService.findByContent(fileGrade);
+        addTagToDoc(tagInfoListSubject,subject,docInfo);
+        addTagToDoc(tagInfoListGrade,fileGrade,docInfo);
+
+
         CommentInfo commentInfo;
+
         //用户发表的资源数量加一
         UserInfo userInfo = userService.findOneById(userId);
         userInfo.setDocNum(userInfo.getDocNum()+1);
@@ -148,5 +154,18 @@ public class UploadController {
         uploadVO.setStarNum(0);
 
         return ResultVOUtil.build(200,"sucess",uploadVO);
+    }
+
+
+    private void addTagToDoc(List<TagInfo> tagInfoList,String content,DocInfo docInfo){
+        if (tagInfoList==null||tagInfoList.size()==0){
+            //说明该标签不存在，需要进行创建
+            TagInfo tagInfo = tagService.addTag(content);
+            tagLinkService.addTagLinkToDoc(tagInfo.getTagId(),docInfo.getDocId());
+        }else{
+            //如果标签存在,选择列表中的第一个标签进行复用
+            tagLinkService.addTagLinkToDoc(tagInfoList.get(0).getTagId(),docInfo.getDocId());
+        }
+
     }
 }
