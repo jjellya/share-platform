@@ -11,6 +11,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 @Controller
 @Slf4j
+@Transactional
 public class UploadController {
 
     @Autowired
@@ -67,7 +69,8 @@ public class UploadController {
         if (fileName==null){
             return ResultVOUtil.errorMsg("请输入文件名");
         }else{
-            System.out.println("测试数据 -------------> "+fileName);
+            //System.out.println("测试数据 -------------> "+fileName);
+            log.info("fileName is "+ fileName);
         }
         if (fileName.length()>255){
             return ResultVOUtil.build(501,"error","文件名过长");
@@ -78,10 +81,12 @@ public class UploadController {
             briefIntro="";
         }
         //设置文件的key
-        System.out.println("测试------>文件大小"+file.getSize());
+        //System.out.println("测试------>文件大小"+file.getSize());
+        log.info("file size is " + file.getSize());
         String filePath = "adshare/" + userId + "/";
         String key = filePath + fileName +"."+ file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
-        System.out.println("测试------------------>上传的文件名："+key);
+        //System.out.println("测试------------------>上传的文件名："+key);
+        log.info("The key is "+ key);
         fileName = fileName +"."+ file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
         //1.查询文件是否存在
         //---->String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
@@ -96,16 +101,13 @@ public class UploadController {
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         // 判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
-        boolean found = ossClient.doesObjectExist(bucket, key);
-        //System.out.println(found);
-        if(!found){
-            //如果文件不存在就上传
-            //上传文件流
-            ossClient.putObject(bucket,key,file.getInputStream());
-            System.out.println("file upload success !");
-        }else{
-            System.out.println("The file is exist !");
-        }
+        //boolean found = ossClient.doesObjectExist(bucket, key);
+        //如果文件不存在就上传
+        //上传文件流
+
+        //无论如何都上传文件，同名文件进行覆盖
+        ossClient.putObject(bucket,key,file.getInputStream());
+        log.info("The file upload success !");
         // 关闭OSSClient。
         ossClient.shutdown();
 
@@ -120,7 +122,6 @@ public class UploadController {
 
 
         CommentInfo commentInfo;
-
         //用户发表的资源数量加一
         UserInfo userInfo = userService.findOneById(userId);
         userInfo.setDocNum(userInfo.getDocNum()+1);
