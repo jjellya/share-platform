@@ -114,7 +114,7 @@
 
 
 2020-8-31更新:
-    
+
     添加了advertisement的mapper
     添加了广告轮播图的业务层
     完善了首页controller的广告业务
@@ -123,6 +123,12 @@
     添加了获取悬赏贴的业务方法
     完善“我的”界面controller
     修改已知bug
+
+2020-9-2更新：
+    
+    添加获取所有科目的Controller
+    解决标签复用问题
+    
 
 [API文档地址](https://www.showdoc.com.cn/sharePlatform?page_id=5060131993333722)
 
